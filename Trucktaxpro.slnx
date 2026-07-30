@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../TruckTaxPro.Application/TruckTaxPro.Application.csproj" />
+  <Project Path="../TruckTaxPro.Data/TruckTaxPro.Data.csproj" />
+  <Project Path="../TruckTaxPro.Domain/TruckTaxPro.Domain.csproj" />
+  <Project Path="Trucktaxpro.csproj" />
+</Solution>

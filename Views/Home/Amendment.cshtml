@@ -1,0 +1,570 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2290 Amendment — Weight Increase & Mileage Exceeded | TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .pg-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+            }
+
+                .pg-hero .eyebrow {
+                    color: var(--amber);
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.1em;
+                    margin-bottom: 14px;
+                    text-transform: uppercase;
+                }
+
+                .pg-hero h1 {
+                    font-size: 38px;
+                    font-weight: 600;
+                    margin-bottom: 18px;
+                    max-width: 720px;
+                }
+
+                .pg-hero p {
+                    color: #C7D2DB;
+                    font-size: 16px;
+                    max-width: 640px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-hero .actions {
+                    display: flex;
+                    gap: 16px;
+                }
+
+            .type-nav {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 0 48px;
+                display: flex;
+                gap: 0;
+            }
+
+                .type-nav a {
+                    padding: 18px 24px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: var(--steel);
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    border-bottom: 3px solid transparent;
+                }
+
+                    .type-nav a:hover {
+                        color: var(--ink);
+                    }
+
+            .section-block {
+                padding: 64px 48px;
+            }
+
+                .section-block.alt {
+                    background: var(--cream);
+                }
+
+                .section-block .tag-eyebrow {
+                    color: var(--amber-dark);
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                }
+
+                .section-block h2 {
+                    font-size: 30px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 8px;
+                }
+
+                .section-block > p.lead {
+                    color: var(--steel);
+                    font-size: 15.5px;
+                    margin-bottom: 36px;
+                    max-width: 760px;
+                }
+
+            .step-cards {
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                gap: 24px;
+                margin-bottom: 8px;
+            }
+
+            .step-card {
+                background: var(--white);
+                border-radius: 8px;
+                padding: 32px;
+                border: 1px solid var(--line);
+            }
+
+                           
+            .step-num {
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                background: var(--ink);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 18px;
+                font-family: 'IBM Plex Mono',monospace;
+                margin-bottom: 20px;
+                flex-shrink: 0;
+            }
+
+            .step-card h3 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--ink);
+                text-transform: none;
+                letter-spacing: 0;
+                margin-bottom: 8px;
+            }
+
+            .step-card p {
+                color: var(--steel);
+                font-size: 14.5px;
+            }
+
+            .bullet-list {
+                list-style: none;
+                margin-bottom: 8px;
+            }
+
+                .bullet-list li {
+                    display: flex;
+                    gap: 14px;
+                    padding: 14px 0;
+                    border-bottom: 1px solid var(--line);
+                    color: var(--ink);
+                    font-size: 15px;
+                }
+
+                    .bullet-list li:last-child {
+                        border-bottom: none;
+                    }
+
+                    .bullet-list li .dot {
+                        flex-shrink: 0;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: var(--amber);
+                        margin-top: 8px;
+                    }
+
+            .ordered-steps {
+                counter-reset: step;
+                margin-bottom: 16px;
+            }
+
+                .ordered-steps li {
+                    list-style: none;
+                    display: flex;
+                    gap: 16px;
+                    padding: 16px 0;
+                    border-bottom: 1px dashed var(--line);
+                }
+
+                    .ordered-steps li:last-child {
+                        border-bottom: none;
+                    }
+
+                    .ordered-steps li::before {
+                        counter-increment: step;
+                        content: counter(step);
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        background: var(--ink);
+                        color: var(--amber);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-family: 'IBM Plex Mono',monospace;
+                        font-weight: 600;
+                        font-size: 14px;
+                        flex-shrink: 0;
+                    }
+
+                    .ordered-steps li .txt {
+                        color: var(--ink);
+                        font-size: 15px;
+                        padding-top: 4px;
+                    }
+
+            .deadline-box {
+                background: #FDEEE0;
+                border: 1px solid var(--amber);
+                border-radius: 8px;
+                padding: 20px 24px;
+                margin: 24px 0;
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+            }
+
+                .deadline-box .badge {
+                    background: var(--amber);
+                    color: var(--amber-dark);
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    padding: 4px 10px;
+                    border-radius: 3px;
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                }
+
+                .deadline-box p {
+                    color: var(--ink);
+                    font-size: 14.5px;
+                    margin: 0;
+                }
+
+            .tax-example {
+                background: var(--ink);
+                color: var(--cream);
+                border-radius: 8px;
+                padding: 28px 32px;
+                margin: 24px 0;
+            }
+
+                .tax-example h4 {
+                    color: var(--amber);
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    margin-bottom: 12px;
+                }
+
+                .tax-example p {
+                    color: #C7D2DB;
+                    font-size: 14.5px;
+                    line-height: 1.65;
+                    margin-bottom: 0;
+                }
+
+                .tax-example a {
+                    color: var(--amber);
+                    text-decoration: underline;
+                }
+
+            .key-takeaway {
+                background: rgba(43,110,79,0.08);
+                border-left: 4px solid var(--green);
+                border-radius: 4px;
+                padding: 18px 22px;
+                margin-top: 20px;
+            }
+
+                .key-takeaway b {
+                    color: var(--green);
+                }
+
+                .key-takeaway p {
+                    color: var(--ink);
+                    font-size: 14.5px;
+                    margin: 0;
+                }
+
+            .mistake-list {
+                list-style: none;
+            }
+
+                .mistake-list li {
+                    display: flex;
+                    gap: 16px;
+                    padding: 18px 0;
+                    border-bottom: 1px solid var(--line);
+                    align-items: flex-start;
+                }
+
+                    .mistake-list li:last-child {
+                        border-bottom: none;
+                    }
+
+                .mistake-list .x-mark {
+                    flex-shrink: 0;
+                    width: 26px;
+                    height: 26px;
+                    border-radius: 50%;
+                    background: #F3D9D4;
+                    color: #B23A2E;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin-top: 2px;
+                }
+
+                .mistake-list b {
+                    color: var(--ink);
+                }
+
+                .mistake-list p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin: 2px 0 0;
+                }
+
+            .pg-faq {
+                padding: 64px 48px;
+                background: var(--white);
+                max-width: 880px;
+                margin: 0 auto;
+            }
+
+                .pg-faq h2 {
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 6px;
+                }
+
+                .pg-faq > p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 32px;
+                }
+
+            .faq-item {
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                margin-bottom: 10px;
+                overflow: hidden;
+            }
+
+            .faq-question {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px 20px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                color: var(--ink);
+            }
+
+                .faq-question .plus {
+                    flex-shrink: 0;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--cream);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    color: var(--ink);
+                    font-family: 'IBM Plex Mono',monospace;
+                    transition: transform 0.15s ease;
+                }
+
+            .faq-item.open .faq-question .plus {
+                transform: rotate(45deg);
+            }
+
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease;
+                padding: 0 20px;
+                color: var(--steel);
+                font-size: 14.5px;
+                line-height: 1.6;
+            }
+
+            .faq-item.open .faq-answer {
+                max-height: 300px;
+                padding: 0 20px 20px;
+            }
+
+            .pg-final {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+                text-align: center;
+            }
+
+                .pg-final h3 {
+                    font-size: 26px;
+                    font-weight: 600;
+                    margin-bottom: 12px;
+                }
+
+                .pg-final p {
+                    color: #C7D2DB;
+                    font-size: 15px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-final .note {
+                    font-size: 13px;
+                    color: #9AA6AE;
+                    margin-top: 16px;
+                }
+    </style>
+</head>
+<body>
+
+    <partial name="_Nav" />
+
+    <section class="pg-hero">
+        <div class="eyebrow">2290 AMENDMENT</div>
+        <h1>Two reasons to amend Form 2290 — weight increase or mileage exceeded</h1>
+        <p>An amendment updates an already-accepted Form 2290 without refiling from scratch. TruckTaxPro e-files either type through the IRS, calculates the additional tax owed, and issues an updated stamped Schedule 1 within minutes of acceptance.</p>
+        <div class="actions">
+            <a class="btn-primary" href="/Auth/Login">Start E-Filing Now →</a>
+            <a class="btn-ghost" href="/#pricing">View Pricing</a>
+        </div>
+    </section>
+
+    <div class="type-nav">
+        <a href="#weight-increase">Weight Increase</a>
+        <a href="#mileage-exceeded">Mileage Exceeded</a>
+        <a href="#prior-period">Prior-Period Rules</a>
+        <a href="#mistakes">Common Mistakes</a>
+    </div>
+
+    <section class="section-block" id="weight-increase">
+        <div class="tag-eyebrow">Reason 1</div>
+        <h2>How to file a Form 2290 gross weight amendment</h2>
+        <p class="lead">A gross weight increase amendment is required when a truck's taxable gross weight rises during the tax period, moving it into a higher HVUT bracket. Three quick steps to stay compliant with the IRS.</p>
+        <div class="step-cards">
+            <div class="step-card"><div class="step-num">1</div><h3>Select the original return</h3><p>Choose the accepted 2290 filing that needs to be amended.</p></div>
+            <div class="step-card"><div class="step-num">2</div><h3>Enter the new weight category</h3><p>Our calculator shows the pro-rated additional HVUT owed.</p></div>
+            <div class="step-card"><div class="step-num">3</div><h3>Submit and receive Schedule 1</h3><p>The IRS accepts most amendments within minutes.</p></div>
+        </div>
+    </section>
+
+    <section class="section-block alt">
+        <div class="tag-eyebrow">Why it happens</div>
+        <h2>Common reasons for a weight increase</h2>
+        <p class="lead">Growing haulers frequently need weight amendments.</p>
+        <div class="step-cards">
+            <div class="step-card"><div class="step-num">1</div><h3>New trailer configuration</h3><p>Upgrading to a heavier trailer moves you into a higher bracket.</p></div>
+            <div class="step-card"><div class="step-num">2</div><h3>Added axles or lift kits</h3><p>Structural upgrades often raise taxable gross weight.</p></div>
+            <div class="step-card"><div class="step-num">3</div><h3>Cargo type change</h3><p>Switching to heavier freight can trigger a bracket change.</p></div>
+        </div>
+    </section>
+
+    <section class="section-block" id="mileage-exceeded">
+        <div class="tag-eyebrow">Reason 2</div>
+        <h2>Mileage Exceeded Amendment</h2>
+        <p class="lead">If a vehicle was filed as suspended (Category W) based on an expected 5,000 highway miles or fewer (7,500 for agricultural) but actually exceeded the threshold during the tax period, the vehicle loses suspended status retroactively. It becomes fully taxable for the entire tax period, and the amendment captures the now-owed tax.</p>
+        <h3 style="font-size:17px;font-weight:600;color:var(--ink);margin-bottom:12px;">When you need it</h3>
+        <ul class="bullet-list">
+            <li><span class="dot"></span><span>A vehicle filed as suspended (Category W) exceeded 5,000 highway miles during the tax period.</span></li>
+            <li><span class="dot"></span><span>For agricultural vehicles, the threshold is 7,500 highway miles.</span></li>
+        </ul>
+        <h3 style="font-size:17px;font-weight:600;color:var(--ink);margin:32px 0 12px;">How to file a Mileage Exceeded Amendment</h3>
+        <ol class="ordered-steps">
+            <li><span class="txt">Log into your e-file provider's dashboard.</span></li>
+            <li><span class="txt">Locate the original Form 2290 return for the current tax period.</span></li>
+            <li><span class="txt">Select Mileage Exceeded Amendment.</span></li>
+            <li><span class="txt">Enter the vehicle's actual taxable gross weight category (no longer Category W).</span></li>
+            <li><span class="txt">Enter the month the threshold was exceeded.</span></li>
+            <li><span class="txt">The provider calculates the full HVUT for the tax period — not pro-rated, because suspended status is voided retroactively.</span></li>
+            <li><span class="txt">Pay and submit; receive a new stamped Schedule 1 listing the vehicle in its taxable category.</span></li>
+        </ol>
+        <div class="deadline-box"><div class="badge">Deadline</div><p>The amendment must be filed by the last day of the month following the month the mileage threshold was exceeded.</p></div>
+        <div class="tax-example">
+            <h4>What the tax looks like</h4>
+            <p>For a Category W vehicle in (say) Category V (over 75,000 lbs) the recalculated tax is the full annual HVUT for Category V — typically $550 for the full tax period if first used in July. The fact that the vehicle was below the threshold for the first several months of the period does not pro-rate the tax. This is one of the harshest HVUT rules; for background, see our guide on Form 2290 suspended vehicle status and the 5,000-mile rule.</p>
+        </div>
+        <div class="key-takeaway"><p><b>Key takeaway:</b> If a suspended vehicle starts approaching the 5,000-mile threshold, decide early — either restrict highway use to stay under, or file the amendment in the month it exceeds.</p></div>
+    </section>
+
+    <section class="section-block alt" id="prior-period">
+        <div class="tag-eyebrow">Filing older returns</div>
+        <h2>Prior-Period Amendments</h2>
+        <p class="lead">Amendments to prior tax periods are allowed but follow different procedures:</p>
+        <ul class="bullet-list">
+            <li><span class="dot"></span><span><b>VIN corrections:</b> Most e-file providers accept prior-period VIN corrections through their dashboards. Verify with the provider — some have a 2-year cutoff.</span></li>
+            <li><span class="dot"></span><span><b>Weight increase or mileage exceeded:</b> Generally require paper filing with a written explanation, but they can also be filed through e-file providers nowadays. Please note that late penalties and interest apply to the additional tax owed, calculated from the original amendment deadline.</span></li>
+        </ul>
+        <div class="deadline-box"><div class="badge">Note</div><p>For prior-period amendments involving additional tax, the IRS will assess failure-to-file and failure-to-pay penalties unless you can show reasonable cause.</p></div>
+    </section>
+
+    <section class="section-block" id="mistakes">
+        <div class="tag-eyebrow">Avoid these</div>
+        <h2>Common Amendment Mistakes</h2>
+        <ul class="mistake-list">
+            <li><div class="x-mark">&#10005;</div><div><b>Waiting until the next annual filing to amend.</b><p>Weight-increase and mileage-exceeded amendments are due the month after the change, not at the next July 1 filing. Waiting accumulates penalties.</p></div></li>
+            <li><div class="x-mark">&#10005;</div><div><b>Not generating a new stamped Schedule 1.</b><p>The amendment produces a new Schedule 1 — make sure you save it, because the state DMV will need it on the next registration interaction.</p></div></li>
+            <li><div class="x-mark">&#10005;</div><div><b>Filing a new Form 2290 instead of an amendment.</b><p>A new return for the same vehicle in the same tax period creates a duplicate filing rejection. Use the amendment workflow in your e-file provider's dashboard.</p></div></li>
+            <li><div class="x-mark">&#10005;</div><div><b>Confusing a VIN correction with a new-vehicle filing.</b><p>A VIN correction modifies an existing entry on a filed return. A new vehicle acquired mid-period requires a separate Form 2290 for the first-used month.</p></div></li>
+            <li><div class="x-mark">&#10005;</div><div><b>Missing the amendment deadline.</b><p>The end-of-following-month rule is unforgiving — penalties accrue from day one of late filing.</p></div></li>
+        </ul>
+    </section>
+
+    <section class="pg-faq">
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything truckers ask about Form 2290 amendments.</p>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>When do I need to amend Form 2290?</span><span class="plus">+</span></div><div class="faq-answer"><p>Three reasons: VIN correction (typo on the original return), taxable gross weight increase (vehicle moves to a higher tax category), or a suspended vehicle that exceeded 5,000 highway miles (7,500 for agricultural).</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>When must I file a gross weight increase amendment?</span><span class="plus">+</span></div><div class="faq-answer"><p>The IRS requires the amendment by the last day of the month following the month the weight increased. For example, if the increase occurred in October, the amendment is due November 30.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>How is additional HVUT calculated for a weight increase?</span><span class="plus">+</span></div><div class="faq-answer"><p>You pay the difference between the new higher bracket and the original bracket, pro-rated for the remaining months of the tax period (through June 30).</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>Do I need to refile the whole return?</span><span class="plus">+</span></div><div class="faq-answer"><p>No. Only an amendment is required. Your original 2290 filing remains valid; the amendment simply updates the weight category (or mileage status) and adds any tax owed.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>Can I file multiple weight-increase amendments?</span><span class="plus">+</span></div><div class="faq-answer"><p>Yes. If the same truck's weight increases twice in one tax period, you can file additional amendments for each increase.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>What is the amendment deadline?</span><span class="plus">+</span></div><div class="faq-answer"><p>Weight-increase and mileage-exceeded amendments: by the last day of the month following the month the change occurred. VIN corrections: no statutory deadline, but should be filed promptly to avoid registration delays.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>How much does a VIN correction cost?</span><span class="plus">+</span></div><div class="faq-answer"><p>The IRS does not charge for VIN corrections. E-file providers typically offer them free for returns filed through them; $5 to $15 if filed elsewhere.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>What if I forgot to file the amendment on time?</span><span class="plus">+</span></div><div class="faq-answer"><p>File the amendment as soon as possible. The IRS may assess a 4.5% monthly penalty plus interest on the additional HVUT owed.</p></div></div>
+    </section>
+
+    <section class="pg-final">
+        <h3>Ready to e-file with TruckTaxPro?</h3>
+        <p>Join hundreds of thousands of truckers, fleets, and tax preparers who trust TruckTaxPro for fast, secure, IRS-authorized e-filing.</p>
+        <a class="btn-primary" href="/Auth/Login" style="display:inline-block;">Start E-Filing Now →</a>
+        <div class="note">No account? Get started in 60 seconds. Pay only when you file.</div>
+    </section>
+
+    <footer class="footer-wide">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo">TRUCK<span>TAX</span>PRO</div>
+                <p>The modern way to e-file Form 2290, pay your Heavy Vehicle Use Tax, and get your IRS Schedule 1 — trusted by owner-operators, fleets and tax preparers across the United States.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="ti ti-brand-facebook" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="X"><i class="ti ti-brand-x" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="ti ti-brand-youtube" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="footer-col"><h4>Product</h4><ul><li><a href="/#features">Features</a></li><li><a href="/#pricing">Pricing</a></li><li><a href="#">IRS Info</a></li><li><a href="/Auth/Login">Sign In</a></li></ul></div>
+            <div class="footer-col"><h4>Filing</h4><ul><li><a href="#">E-File Form 2290</a></li><li><a href="#">VIN Correction</a></li><li><a href="/Amendment">2290 Amendment</a></li><li><a href="#">Form 8849 Refund</a></li></ul></div>
+            <div class="footer-col"><h4>Company</h4><ul><li>About</li><li>Blog</li><li>Careers</li><li>Contact Support</li></ul></div>
+            <div class="footer-col"><h4>Legal</h4><ul><li>Privacy Policy</li><li>Terms of Service</li><li>Refund Policy</li><li>Security</li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 TruckTaxPro. IRS-authorized e-file provider. All rights reserved.</div>
+            <div>Made for hard-working truckers · US-based support</div>
+        </div>
+    </footer>
+
+    <script>
+            function toggleItem(headerEl) {
+                headerEl.parentElement.classList.toggle('open');
+            }
+    </script>
+
+</body>
+</html>

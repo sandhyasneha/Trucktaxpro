@@ -1,0 +1,6 @@
+@Trucktaxpro_HostAddress = http://localhost:5269
+
+GET {{Trucktaxpro_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

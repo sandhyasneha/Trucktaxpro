@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Security — TruckTaxPro";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@600;700&family=IBM+Plex+Sans:wght@@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .legal-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 56px 48px 40px;
+                text-align: center;
+            }
+
+                .legal-hero h1 {
+                    font-size: 32px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+            .legal-body {
+                max-width: 780px;
+                margin: 0 auto;
+                padding: 48px;
+                font-size: 15px;
+                line-height: 1.7;
+                color: var(--steel);
+            }
+
+                .legal-body h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin: 32px 0 12px;
+                }
+
+                    .legal-body h2:first-child {
+                        margin-top: 0;
+                    }
+
+                .legal-body p {
+                    margin-bottom: 16px;
+                }
+
+                .legal-body a {
+                    color: var(--amber-dark);
+                    font-weight: 600;
+                }
+    </style>
+</head>
+<body>
+    <partial name="_Nav" />
+
+    <section class="legal-hero">
+        <h1>Security</h1>
+    </section>
+
+    <div class="legal-body">
+        <p>TruckTaxPro.com secures sensitive tax and fleet data utilizing bank-grade SSL/TLS encryption for all transmissions, with data access restricted to authorized personnel. The platform is hosted on secured, firewalled servers that continuously monitor for external threats.</p>
+
+        <h2>Data Security and Retention</h2>
+        <p>At TruckTaxPro.com, protecting your sensitive tax, fleet, and personal data is our highest priority. We safeguard your information using bank-grade SSL/TLS encryption for all data transmissions, alongside advanced firewall protections and continuous security monitoring to block external threats. Access to your file is strictly restricted to authorized personnel who require the data to process your filings, and we never store your full payment card details on our servers. All information is housed in highly secure, access-controlled data centers, ensuring your data remains protected from unauthorized access, loss, or alteration throughout the entire e-filing process.</p>
+
+        <h2>Contact Support</h2>
+        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or the security of your data, please contact our privacy compliance team at <a href="mailto:support@trucktaxpro.com">support@trucktaxpro.com</a>. We aim to respond to all inquiries within 24 to 48 business hours.</p>
+    </div>
+
+    <partial name="_Footer" />
+</body>
+</html>

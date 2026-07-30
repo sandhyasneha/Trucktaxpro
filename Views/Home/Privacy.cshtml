@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Privacy Policy — TruckTaxPro";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@600;700&family=IBM+Plex+Sans:wght@@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .legal-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 56px 48px 40px;
+                text-align: center;
+            }
+
+                .legal-hero h1 {
+                    font-size: 32px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                .legal-hero p {
+                    color: #C7D2DB;
+                    font-size: 14px;
+                }
+
+            .legal-body {
+                max-width: 780px;
+                margin: 0 auto;
+                padding: 48px;
+                font-size: 15px;
+                line-height: 1.7;
+                color: var(--steel);
+            }
+
+                .legal-body h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin: 32px 0 12px;
+                }
+
+                    .legal-body h2:first-child {
+                        margin-top: 0;
+                    }
+
+                .legal-body p {
+                    margin-bottom: 14px;
+                }
+
+                .legal-body b {
+                    color: var(--ink);
+                }
+    </style>
+</head>
+<body>
+    <partial name="_Nav" />
+
+    <section class="legal-hero">
+        <h1>Privacy Policy</h1>
+        <p>Effective Date: July 29, 2026</p>
+    </section>
+
+    <div class="legal-body">
+        <h2>1. Information We Collect</h2>
+        <p><b>Personal Data:</b> Names, phone numbers, email addresses, and billing details.</p>
+        <p><b>Tax Data:</b> EINs, DOT numbers, VINs, and fleet operational information.</p>
+        <p><b>Usage Data:</b> IP addresses, browser types, and website cookies.</p>
+
+        <h2>2. How We Use Information</h2>
+        <p><b>Service Delivery:</b> Processing IRS Form 2290 e-files and tax payments.</p>
+        <p><b>Communication:</b> Sending filing confirmations, deadlines, and system updates.</p>
+        <p><b>Improvement:</b> Optimizing website performance and user experience.</p>
+
+        <h2>3. Information Sharing and Disclosure</h2>
+        <p><b>IRS Compliance:</b> Shared directly with the Internal Revenue Service (IRS).</p>
+        <p><b>Service Providers:</b> Shared with secure payment gateways and hosting partners.</p>
+        <p><b>Legal Duty:</b> Disclosed only if required by federal law.</p>
+
+        <h2>4. Data Security and Retention</h2>
+        <p><b>Encryption:</b> Bank-grade SSL/TLS encryption for all data transmissions.</p>
+        <p><b>Storage:</b> Data is kept as long as required by IRS retention rules.</p>
+
+        <h2>5. Your Privacy Rights</h2>
+        <p><b>Access:</b> Request copies of your personal data stored with us.</p>
+        <p><b>Correction:</b> Ask us to fix inaccurate or outdated information.</p>
+        <p><b>Deletion:</b> Request data removal, subject to mandatory tax record laws.</p>
+
+        <h2>Contact</h2>
+        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or the security of your data, please contact our privacy compliance team at <a href="mailto:support@trucktaxpro.com" style="color:var(--amber-dark);font-weight:600;">support@trucktaxpro.com</a>. We aim to respond to all inquiries within 24 to 48 business hours.</p>
+    </div>
+
+    <partial name="_Footer" />
+</body>
+</html>

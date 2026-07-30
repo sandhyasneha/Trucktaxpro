@@ -1,0 +1,197 @@
+﻿@model Trucktaxpro.Models.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@600;700&family=IBM+Plex+Sans:wght@@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .auth-wrap {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--ink);
+                padding: 24px;
+                position: relative;
+            }
+
+            .top-logo {
+                position: absolute;
+                top: 28px;
+                left: 32px;
+                width: 220px;
+            }
+
+            .auth-card {
+                background: var(--white);
+                border-radius: 8px;
+                padding: 40px;
+                width: 100%;
+                max-width: 400px;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+                border-top: 4px solid var(--amber);
+                position: relative;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: -44px;
+                right: 0;
+                color: #B23A2E;
+                font-size: 26px;
+                font-weight: 700;
+                line-height: 1;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .auth-card h1 {
+                font-size: 20px;
+                text-transform: none;
+                letter-spacing: 0;
+                font-weight: 600;
+                color: var(--ink);
+                margin: 0 0 24px;
+            }
+
+            .google-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+                padding: 13px;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                background: var(--white);
+                color: var(--ink);
+                font-weight: 600;
+                font-size: 14px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                text-decoration: none;
+            }
+
+            .divider {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: var(--steel);
+                font-size: 12px;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+                .divider::before, .divider::after {
+                    content: "";
+                    flex: 1;
+                    height: 1px;
+                    background: var(--line);
+                }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+                .form-group label {
+                    display: block;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 6px;
+                }
+
+                .form-group input[type=email], .form-group input[type=password] {
+                    width: 100%;
+                    padding: 11px 12px;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    font-size: 14px;
+                    font-family: 'IBM Plex Sans',sans-serif;
+                    box-sizing: border-box;
+                }
+
+            .form-check {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 20px;
+                font-size: 13px;
+                color: var(--steel);
+            }
+
+            .submit-btn {
+                width: 100%;
+                padding: 13px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+            }
+
+            .validation-summary {
+                color: #B23A2E;
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+
+            .forgot-link {
+                display: block;
+                text-align: center;
+                margin-top: 16px;
+                font-size: 13px;
+                color: var(--steel);
+            }
+    </style>
+</head>
+<body>
+    <div class="auth-wrap">
+        <img src="~/images/logo.svg" alt="TruckTaxPro" class="top-logo" />
+
+        <div class="auth-card">
+            <a href="/" class="close-btn" aria-label="Close">&times;</a>
+            <h1>Sign in to file your Form 2290</h1>
+
+            <a class="google-btn" href="/api/account/login">
+                Sign in with Google
+            </a>
+
+            <div class="divider">or</div>
+
+            <div asp-validation-summary="All" class="validation-summary"></div>
+
+            <form asp-action="Login" asp-controller="Auth" method="post">
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" placeholder="••••••••" />
+                </div>
+                <div class="form-check">
+                    <input asp-for="RememberMe" type="checkbox" />
+                    <label asp-for="RememberMe">Remember me</label>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <a href="/Auth/ForgotPassword" class="forgot-link">Forgot your password?</a>
+            <a href="/Auth/Register" class="forgot-link" style="margin-top:8px;">Don't have an account? Sign up</a>
+        </div>
+    </div>
+</body>
+</html>

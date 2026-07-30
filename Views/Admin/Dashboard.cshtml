@@ -1,0 +1,150 @@
+﻿@model TruckTaxPro.Domain.Announcement
+@{
+    Layout = null;
+    ViewData["Title"] = "Admin Dashboard";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard — TruckTaxPro</title>
+    <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: #f4f1ea;
+                margin: 0;
+            }
+
+            .top-bar {
+                background: #1f3a5f;
+                color: #fff;
+                padding: 16px 32px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .top-bar a {
+                    color: #f2a93b;
+                    text-decoration: none;
+                    font-weight: 600;
+                    font-size: 13px;
+                }
+
+            .content {
+                max-width: 700px;
+                margin: 40px auto;
+                background: #fff;
+                padding: 32px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+            }
+
+            .success-msg {
+                background: rgba(43,110,79,0.1);
+                border: 1px solid #2b6e4f;
+                color: #2b6e4f;
+                padding: 12px 16px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+
+            .error-msg {
+                background: rgba(178,58,46,0.1);
+                border: 1px solid #b23a2e;
+                color: #b23a2e;
+                padding: 12px 16px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+
+            .current-announcement {
+                background: #fffbe6;
+                border: 1px solid #f2a93b;
+                padding: 16px;
+                border-radius: 6px;
+                margin-bottom: 24px;
+            }
+
+            textarea {
+                width: 100%;
+                min-height: 80px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-family: inherit;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+
+            .btn {
+                padding: 10px 22px;
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                cursor: pointer;
+                font-size: 13px;
+                margin-top: 10px;
+            }
+
+            .btn-post {
+                background: #1f3a5f;
+                color: #fff;
+            }
+
+            .btn-remove {
+                background: #c62828;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+    <div>TruckTaxPro Admin</div>
+    <div>
+        <a asp-action="Dashboard" asp-controller="Admin" style="margin-right:18px;">Announcements</a>
+        <a asp-action="BlogList" asp-controller="Admin" style="margin-right:18px;">Blog</a>
+        <a asp-action="Logout" asp-controller="Admin">Log Out</a>
+    </div>
+</div>
+
+    <div class="content">
+        <h2>Announcement</h2>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="success-msg">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="error-msg">@TempData["Error"]</div>
+        }
+
+        @if (Model != null)
+        {
+            <div class="current-announcement">
+                <strong>Currently live on homepage:</strong>
+                <p style="margin:8px 0 0;">@Model.Message</p>
+            </div>
+
+            <form asp-action="RemoveAnnouncement" asp-controller="Admin" method="post">
+                <button type="submit" class="btn btn-remove">Remove Announcement</button>
+            </form>
+
+            <hr style="margin:28px 0;" />
+        }
+        else
+        {
+            <p style="color:#666;">No announcement is currently active.</p>
+        }
+
+        <h3>Post New Announcement</h3>
+        <form asp-action="PostAnnouncement" asp-controller="Admin" method="post">
+            <textarea name="message" placeholder="e.g. IRS systems down today, filings may be delayed." required></textarea>
+            <button type="submit" class="btn btn-post">Post Announcement</button>
+        </form>
+    </div>
+</body>
+</html>

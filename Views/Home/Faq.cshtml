@@ -1,0 +1,501 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form 2290 FAQ — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .faq-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px 48px;
+                text-align: center;
+            }
+
+                .faq-hero h1 {
+                    font-size: 36px;
+                    font-weight: 600;
+                    margin-bottom: 14px;
+                }
+
+                .faq-hero p {
+                    color: #C7D2DB;
+                    font-size: 16px;
+                    max-width: 640px;
+                    margin: 0 auto 28px;
+                }
+
+                .faq-hero .talk-link {
+                    color: var(--amber);
+                    font-weight: 600;
+                    text-decoration: underline;
+                }
+
+            .search-wrap {
+                max-width: 560px;
+                margin: 0 auto;
+                position: relative;
+            }
+
+                .search-wrap input {
+                    width: 100%;
+                    padding: 14px 18px 14px 44px;
+                    border-radius: 6px;
+                    border: none;
+                    font-size: 15px;
+                    font-family: 'IBM Plex Sans',sans-serif;
+                    color: var(--ink);
+                }
+
+                .search-wrap .icon {
+                    position: absolute;
+                    left: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--steel);
+                    font-size: 16px;
+                }
+
+            .faq-toolbar {
+                background: var(--white);
+                padding: 24px 48px;
+                border-bottom: 1px solid var(--line);
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .cat-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .cat-chip {
+                padding: 8px 16px;
+                border-radius: 20px;
+                border: 1px solid var(--line);
+                background: var(--white);
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                cursor: pointer;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+            }
+
+                .cat-chip.active {
+                    background: var(--ink);
+                    color: var(--cream);
+                    border-color: var(--ink);
+                }
+
+            .result-count {
+                font-size: 13px;
+                color: var(--steel);
+                font-family: 'IBM Plex Mono',monospace;
+            }
+
+            .faq-body {
+                padding: 48px;
+                max-width: 880px;
+                margin: 0 auto;
+            }
+
+            .faq-category-group {
+                margin-bottom: 40px;
+            }
+
+                .faq-category-group h2 {
+                    font-size: 14px;
+                    color: var(--amber-dark);
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    margin-bottom: 16px;
+                    padding-bottom: 10px;
+                    border-bottom: 2px dashed var(--line);
+                }
+
+            .faq-item {
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                margin-bottom: 10px;
+                overflow: hidden;
+                background: var(--white);
+            }
+
+                .faq-item.hidden {
+                    display: none;
+                }
+
+            .faq-question {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px 20px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                color: var(--ink);
+            }
+
+                .faq-question .plus {
+                    flex-shrink: 0;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--cream);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    color: var(--ink);
+                    font-family: 'IBM Plex Mono',monospace;
+                    transition: transform 0.15s ease;
+                }
+
+            .faq-item.open .faq-question .plus {
+                transform: rotate(45deg);
+            }
+
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease;
+                padding: 0 20px;
+                color: var(--steel);
+                font-size: 14.5px;
+                line-height: 1.6;
+            }
+
+            .faq-item.open .faq-answer {
+                max-height: 400px;
+                padding: 0 20px 20px;
+            }
+
+            .no-results {
+                text-align: center;
+                padding: 60px 20px;
+                color: var(--steel);
+                display: none;
+            }
+
+                .no-results.show {
+                    display: block;
+                }
+
+            .faq-cta {
+                background: var(--cream);
+                padding: 56px 48px;
+                text-align: center;
+                border-top: 1px solid var(--line);
+            }
+
+                .faq-cta h3 {
+                    font-size: 22px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 8px;
+                }
+
+                .faq-cta p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 20px;
+                }
+
+                .faq-cta a.talk {
+                    display: inline-block;
+                    background: var(--ink);
+                    color: var(--cream);
+                    padding: 14px 30px;
+                    border-radius: 4px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+            .faq-final {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 56px 48px;
+                text-align: center;
+            }
+
+                .faq-final h3 {
+                    font-size: 24px;
+                    font-weight: 600;
+                    margin-bottom: 20px;
+                }
+
+                .faq-final a {
+                    display: inline-block;
+                    background: var(--amber);
+                    color: var(--amber-dark);
+                    padding: 15px 32px;
+                    border-radius: 4px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+    </style>
+</head>
+<body>
+
+    <partial name="_Nav" />
+
+    <section class="faq-hero">
+        <h1>Form 2290 questions, answered.</h1>
+        <p>A no-jargon guide to Heavy Vehicle Use Tax, e-filing, EINs, VINs, refunds and everything in between. Can't find your question? <a href="#talk-to-us" class="talk-link">Talk to us</a>.</p>
+        <div class="search-wrap">
+            <span class="icon">&#128269;</span>
+            <input type="text" id="faqSearch" placeholder="Try 'EIN', 'Schedule 1', 'suspended vehicle', 'refund'…" oninput="filterFaq()" />
+        </div>
+    </section>
+
+    <div class="faq-toolbar">
+        <div class="cat-chips" id="catChips">
+            <div class="cat-chip active" data-cat="all" onclick="setCategory('all')">All</div>
+            <div class="cat-chip" data-cat="basics" onclick="setCategory('basics')">The Basics</div>
+            <div class="cat-chip" data-cat="deadlines" onclick="setCategory('deadlines')">Deadlines &amp; Responsibility</div>
+            <div class="cat-chip" data-cat="identifiers" onclick="setCategory('identifiers')">Identifiers &amp; Vehicle Types</div>
+            <div class="cat-chip" data-cat="payments" onclick="setCategory('payments')">Payment, Refunds &amp; Corrections</div>
+        </div>
+        <div class="result-count" id="resultCount">Showing all 28 questions</div>
+    </div>
+
+    <div class="faq-body">
+
+        <div class="faq-category-group" data-cat="basics">
+            <h2>The Basics</h2>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Form 2290 is the IRS return used to report and pay the federal Heavy Vehicle Use Tax (HVUT) on highway motor vehicles with a taxable gross weight of 55,000 pounds or more. It's filed once per tax year (July 1 – June 30) and produces your Schedule 1 — the proof-of-payment document your DMV needs at registration.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What are the other words commonly known for Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Truckers, CPAs, and IRS letters use several names for the same thing: Heavy Vehicle Use Tax return, HVUT return, Heavy Highway Vehicle Use Tax return, IRS 2290, or simply "the 2290."</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>Do I need to register on your site to file my return?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Yes — registration is free and takes about a minute. You only pay when you actually submit a Form 2290. Everything before that (building drafts, calculating tax, checking VINs) is free.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>I have only 1 truck — can I still file online using Trucktaxpro?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Absolutely. Our Solo plan is built for single-truck owner-operators — e-file your 2290 in about five minutes and download your Express Schedule 1 the same session.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a Schedule 1?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Schedule 1 is the IRS-stamped proof-of-payment page you receive after Form 2290 is accepted. It lists your VINs and is required by state DMVs, IRP registrations, and most carriers before your truck can be plated for the year.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="basics">
+                <div class="faq-question" onclick="toggleItem(this)"><span>How long does it take to get Schedule 1?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Most Trucktaxpro filings are accepted by the IRS within minutes. Your IRS-stamped Schedule 1 appears in your dashboard and inbox the moment acceptance is confirmed.</p></div>
+            </div>
+        </div>
+
+        <div class="faq-category-group" data-cat="deadlines">
+            <h2>Deadlines &amp; Responsibility</h2>
+
+            <div class="faq-item" data-cat="deadlines">
+                <div class="faq-question" onclick="toggleItem(this)"><span>When is the due date for Form 2290 to IRS?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>For trucks already in service in July, Form 2290 is due by August 31. For newly-placed trucks, it's due the last day of the month following the first-used month. Suspended (Category W) vehicles follow the same schedule.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="deadlines">
+                <div class="faq-question" onclick="toggleItem(this)"><span>Who is responsible to file and pay Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>The person or business in whose name the vehicle is registered — usually the legal owner. If a truck is titled to one entity but operated by another, the registered owner is still the one responsible for HVUT.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="deadlines">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What happens if I forgot to file Form 2290 or filed late?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>The IRS charges a late-filing penalty of 4.5% of the total tax per month (up to five months), plus interest and a 0.5% monthly late-payment penalty. States can also refuse to renew your truck's registration without a valid Schedule 1.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="deadlines">
+                <div class="faq-question" onclick="toggleItem(this)"><span>I own a truck but drive it for someone else or a leasing company — who files Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>The return is filed under the name on the vehicle's registration. If you own the truck and lease it to a carrier, you file. If the carrier owns the truck and you drive it, the carrier files.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="deadlines">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a final return in Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>A "final return" is filed when you permanently stop operating heavy vehicles — you've sold every truck, gone out of business, or otherwise no longer have HVUT obligations. Checking that box tells the IRS to stop expecting future 2290s from your EIN.</p></div>
+            </div>
+        </div>
+
+        <div class="faq-category-group" data-cat="identifiers">
+            <h2>Identifiers &amp; Vehicle Types</h2>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is an Employer Identification Number (EIN)?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>An EIN is a 9-digit federal tax ID issued by the IRS to identify a business. It's mandatory for Form 2290 — the IRS will not accept a Social Security Number in its place.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>Can I use my Social Security Number as an EIN?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>No. Form 2290 specifically requires an EIN. If you don't have one, apply free at IRS.gov — new EINs usually take about two weeks before they become active in the IRS e-file system.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a Vehicle Identification Number (VIN)?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>A VIN is the 17-character alphanumeric identifier stamped on your truck by the manufacturer (no I, O, or Q). It uniquely identifies your vehicle and appears on your Schedule 1. Trucktaxpro validates it in real time and offers free VIN corrections if you make a typo.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a PIN — the 5-digit PIN on online Form 2290?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>The 5-digit PIN is your electronic signature on Form 2290. You choose any 5 non-zero digits (except obvious sequences like 12345 or 55555). It authenticates your submission the same way a wet signature would on paper.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>How can I know if my vehicle is taxable?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>A vehicle is taxable under HVUT if its taxable gross weight is 55,000 lb or more and it's expected to travel more than 5,000 miles on public highways during the tax year (7,500 for agricultural use).</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a suspended (tax-exempt) vehicle?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>A suspended vehicle (Category W) is one you expect to drive 5,000 miles or less on public highways during the tax year (7,500 for agricultural). You still file Form 2290 to report it — but the HVUT owed is $0.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is an agricultural vehicle?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>An agricultural vehicle is used primarily (more than 50%) for farming purposes. Its suspension mileage threshold is raised from 5,000 to 7,500 miles per tax year.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="identifiers">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is a logging vehicle?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>A logging vehicle is used exclusively to transport products harvested from a forested site (or between forested sites). Logging trucks qualify for a reduced HVUT rate — roughly 25% less. Trucktaxpro flags this automatically when you select the Logging vehicle type.</p></div>
+            </div>
+        </div>
+
+        <div class="faq-category-group" data-cat="payments">
+            <h2>Payment, Refunds &amp; Corrections</h2>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What are the payment options to pay my tax?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>The IRS accepts four HVUT payment methods, all supported inside Trucktaxpro: (1) Electronic Funds Withdrawal (EFW), (2) EFTPS, (3) credit or debit card via an IRS-approved processor, and (4) check or money order mailed with Form 2290-V.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>Can I pay the tax using either debit or credit card?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Yes. The IRS accepts credit and debit card payments through IRS-authorized processors. A small processor fee applies (not charged by Trucktaxpro or the IRS).</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is the Electronic Federal Tax Payment System (EFTPS)?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>EFTPS is the IRS's free online system for paying federal taxes directly from a US bank account. You'll need to enroll separately at EFTPS.gov before selecting it as your payment method inside Trucktaxpro.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What if my Form 2290 was rejected by the IRS?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Rejections are almost always fixable. Trucktaxpro shows the exact IRS rejection reason — usually a mismatched EIN/business-name pair or an EIN that hasn't yet activated in the IRS e-file database. Correct the field, re-submit, and there's no additional filing fee.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>When can I claim a tax credit for Form 2290 I paid for a heavy vehicle?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>You can claim a credit or refund if the vehicle was sold, destroyed, stolen, or driven 5,000 miles or less (7,500 for agricultural) during the tax year. Credits are usually taken on your next 2290 or requested via Form 8849 Schedule 6.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is Form 8849?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Form 8849 is the IRS refund form. Schedule 6 of Form 8849 is what you file to reclaim HVUT paid on a vehicle that was sold, destroyed, stolen, or fell under the mileage-use exemption. Trucktaxpro submits it in the same portal.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What is duplicate filing? How does it happen?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Duplicate filing is when the IRS receives more than one Form 2290 for the same VIN in the same tax year. It usually happens after a rejection triggers a hasty re-submission. If it happens to you, Trucktaxpro helps you contact the IRS to sort it out — again, no extra filing fee.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>What do I need to do if I changed my address?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>Update your business address in your Trucktaxpro dashboard before your next filing. For a mid-year change, you can also notify the IRS directly with Form 8822-B so future correspondence reaches you.</p></div>
+            </div>
+
+            <div class="faq-item" data-cat="payments">
+                <div class="faq-question" onclick="toggleItem(this)"><span>I traded my truck for another truck — can I transfer my tax payment?</span><span class="plus">+</span></div>
+                <div class="faq-answer"><p>HVUT is paid per VIN, so it doesn't transfer automatically. What you can do is claim a credit on the sold or traded truck (prorated for the months left in the tax year) and apply it against the HVUT on the new truck when you file its 2290. Trucktaxpro handles both in one flow.</p></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults">No questions match your search. Try a different term, or talk to us directly.</div>
+
+    </div>
+
+    <section class="faq-cta" id="talk-to-us">
+        <h3>Still have questions?</h3>
+        <p>Our US-based IRS-trained specialists answer chat, email, and phone 7 days a week during filing season.</p>
+        <a href="#" class="talk">Talk to us →</a>
+    </section>
+
+    <section class="faq-final">
+        <h3>Ready when you are</h3>
+        <p style="margin-bottom:24px;color:#C7D2DB;">Park the paperwork. e-File Form 2290 in the time it takes to fuel up.</p>
+        <a href="/Auth/Login">File your 2290 →</a>
+    </section>
+
+    <script>
+            let currentCategory = 'all';
+
+            function setCategory(cat) {
+              currentCategory = cat;
+              document.querySelectorAll('.cat-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.getAttribute('data-cat') === cat);
+              });
+              filterFaq();
+            }
+
+            function toggleItem(headerEl) {
+              headerEl.parentElement.classList.toggle('open');
+            }
+
+            function filterFaq() {
+              const query = document.getElementById('faqSearch').value.trim().toLowerCase();
+              const groups = document.querySelectorAll('.faq-category-group');
+              let visibleCount = 0;
+
+              groups.forEach(group => {
+                const groupCat = group.getAttribute('data-cat');
+                const groupMatchesCategory = currentCategory === 'all' || currentCategory === groupCat;
+                let groupHasVisibleItem = false;
+
+                group.querySelectorAll('.faq-item').forEach(item => {
+                  const text = item.textContent.toLowerCase();
+                  const matchesSearch = query === '' || text.includes(query);
+                  const show = groupMatchesCategory && matchesSearch;
+                  item.classList.toggle('hidden', !show);
+                  if (show) {
+                    visibleCount++;
+                    groupHasVisibleItem = true;
+                  }
+                });
+
+                group.style.display = groupHasVisibleItem ? '' : 'none';
+              });
+
+              document.getElementById('resultCount').textContent =
+                query === '' && currentCategory === 'all'
+                  ? 'Showing all 28 questions'
+                  : `Showing ${visibleCount} question${visibleCount === 1 ? '' : 's'}`;
+
+              document.getElementById('noResults').classList.toggle('show', visibleCount === 0);
+            }
+    </script>
+
+</body>
+</html>

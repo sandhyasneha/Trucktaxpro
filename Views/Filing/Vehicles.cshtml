@@ -1,0 +1,393 @@
+﻿@model Trucktaxpro.Models.VehicleListViewModel
+@{
+    ViewData["Title"] = "Taxable Vehicles - Form 2290";
+}
+
+<div class="filing-wizard">
+    <h2>Taxable Vehicles</h2>
+    <p class="subtext">Confirm the vehicles you're filing Form 2290 for this tax year.</p>
+
+    <form id="vehiclesForm" asp-action="SaveVehicles" asp-controller="Filing" method="post">
+        <input type="hidden" name="BusinessId" value="@Model.BusinessId" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <table class="vehicle-table" id="vehicleTable">
+            <thead>
+                <tr>
+                    <th>VIN</th>
+                    <th>Weight Category</th>
+                    <th>
+                        Agricultural
+                        <span class="help-icon">?
+                            <span class="tip">Check this if the vehicle is used for farming and travels 7,500 miles or less per year (a "logging" vehicle). Uses a lower tax rate. Leave unchecked for a normal taxable vehicle.</span>
+                        </span>
+                    </th>
+                    <th>
+                        Suspended
+                        <span class="help-icon">?
+                            <span class="tip">Check this if the vehicle is expected to travel 5,000 miles or less per year (7,500 for agricultural) and is exempt from tax this period.</span>
+                        </span>
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="vehicleRows">
+                @for (int i = 0; i < Model.Vehicles.Count; i++)
+                {
+                    var v = Model.Vehicles[i];
+                    <tr class="vehicle-row @(v.IsFromPriorYear ? "prior-year" : "")" data-index="@i">
+                        <td>
+                        <input type="hidden" name="Vehicles[@i].Id" value="@v.Id" />
+                        <input type="hidden" name="Vehicles[@i].IsFromPriorYear" value="@v.IsFromPriorYear.ToString().ToLower()" />
+                        <input type="text" name="Vehicles[@i].Vin" value="@v.Vin"
+                        maxlength="17" class="vin-input" oninput="validateVin(this)"
+                     @(v.IsFromPriorYear ? "readonly" : "") />
+                     <span class="vin-live-error"></span>
+                        </td>
+                        <td>
+                            <select name="Vehicles[@i].WeightCategory" class="weight-select" @(v.IsFromPriorYear ? "disabled" : "")>
+                                <option value="">Select...</option>
+                                @foreach (var cat in ViewBag.WeightCategories as List<SelectListItem> ?? new())
+                                {
+                                    <option value="@cat.Value" selected="@(cat.Value == v.WeightCategory)">@cat.Text</option>
+                                }
+                            </select>
+                        </td>
+                        <td class="center">
+                            <input type="checkbox" name="Vehicles[@i].IsAgricultural" value="true" checked="@v.IsAgricultural"
+                                   class="ag-checkbox" title="Agricultural / Logging vehicle - lower tax rate, 7,500 mile limit"
+                                   onclick="enforceExclusive(this)" @(v.IsFromPriorYear ? "disabled" : "") />
+                        </td>
+                        <td class="center">
+                            <input type="checkbox" name="Vehicles[@i].IsSuspended" value="true" checked="@v.IsSuspended"
+                                   class="susp-checkbox" title="Suspended - expected 5,000 miles or less, tax exempt"
+                                   onclick="enforceExclusive(this)" @(v.IsFromPriorYear ? "disabled" : "") />
+                        </td>
+                        <td class="actions">
+                            @if (v.IsFromPriorYear)
+                            {
+                                <input type="hidden" name="Vehicles[@i].IsConfirmed" class="confirmed-flag" value="false" />
+                                <button type="button" class="btn-add-row">Add</button>
+                                <button type="button" class="btn-delete-row">Delete</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn-edit-row">Edit</button>
+                                <button type="button" class="btn-delete-row">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="table-footer">
+            <button type="button" id="btnAddRow" class="btn-plus" title="Add a new vehicle">+ Add Vehicle</button>
+
+            <a href="#" id="toggleUpload" class="upload-toggle-link">Have 6+ vehicles? Upload a file instead</a>
+        </div>
+
+        <div id="uploadSection" class="upload-section hidden">
+            <p class="upload-hint">
+                Upload a <strong>.txt</strong> file (one VIN per line) or an <strong>.xlsx</strong> file with columns:
+                <em>VIN, WeightCategory, IsAgricultural, IsSuspended</em>. Bulk upload is for 6 or more vehicles.
+            </p>
+            <input type="file" id="fileUpload" accept=".txt,.xlsx" />
+            <button type="button" id="btnUpload" class="btn-upload">Upload &amp; Preview</button>
+            <div id="uploadMessage" class="upload-message"></div>
+        </div>
+
+        <div class="save-bar">
+            <button type="submit" class="btn-save">Save &amp; Continue</button>
+        </div>
+    </form>
+</div>
+
+<!-- Hidden template row for JS cloning -->
+<template id="rowTemplate">
+    <tr class="vehicle-row">
+        <td>
+            <input type="hidden" name="" value="" />
+            <input type="hidden" name="" value="false" />
+            <input type="text" name="" value="" maxlength="17" class="vin-input" placeholder="17-character VIN" oninput="validateVin(this)" />
+            <span class="vin-live-error"></span>
+        </td>
+        <td>
+            <select name="" class="weight-select">
+                <option value="">Select...</option>
+                @foreach (var cat in ViewBag.WeightCategories as List<SelectListItem> ?? new())
+                {
+                    <option value="@cat.Value">@cat.Text</option>
+                }
+            </select>
+        </td>
+        <td class="center">
+            <input type="checkbox" name="" value="true" class="ag-checkbox"
+                   title="Agricultural / Logging vehicle - lower tax rate, 7,500 mile limit"
+                   onclick="enforceExclusive(this)" />
+        </td>
+        <td class="center">
+            <input type="checkbox" name="" value="true" class="susp-checkbox"
+                   title="Suspended - expected 5,000 miles or less, tax exempt"
+                   onclick="enforceExclusive(this)" />
+        </td>
+        <td class="actions">
+            <button type="button" class="btn-edit-row">Edit</button>
+            <button type="button" class="btn-delete-row">Delete</button>
+        </td>
+    </tr>
+</template>
+
+<style>
+    .filing-wizard { max-width: 960px; margin: 2rem auto; font-family: 'Segoe UI', sans-serif; }
+    .subtext { color: #666; margin-bottom: 1.5rem; }
+    .vehicle-table { width: 100%; border-collapse: collapse; }
+    .vehicle-table th { background: #1f3a5f; color: #fff; padding: 10px; text-align: left; font-size: 0.9rem; }
+    .vehicle-table td { padding: 8px 10px; border-bottom: 1px solid #e0e0e0; }
+    .vehicle-row.prior-year { background: #f6f9fc; }
+    .vehicle-row.duplicate-flag { background: #fff3cd; }
+    .vin-input { width: 160px; padding: 6px; text-transform: uppercase; }
+    .weight-select { padding: 6px; }
+    .center { text-align: center; }
+    .actions button { margin-right: 6px; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+    .btn-add-row { background: #2e7d32; color: #fff; }
+    .btn-edit-row { background: #1565c0; color: #fff; }
+    .btn-delete-row { background: #c62828; color: #fff; }
+    .table-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+    .btn-plus { background: #1f3a5f; color: #fff; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+    .upload-toggle-link { color: #1565c0; text-decoration: underline; font-size: 0.9rem; }
+    .upload-section { margin-top: 16px; padding: 16px; border: 1px dashed #999; border-radius: 6px; background: #fafafa; }
+    .upload-section.hidden { display: none; }
+    .upload-hint { font-size: 0.85rem; color: #555; }
+    .btn-upload { background: #ef6c00; color: #fff; padding: 8px 14px; border: none; border-radius: 4px; margin-left: 10px; cursor: pointer; }
+    .upload-message { margin-top: 8px; font-size: 0.9rem; }
+    .save-bar { display: flex; justify-content: flex-end; margin-top: 24px; }
+    .btn-save { background: #2e7d32; color: #fff; padding: 12px 28px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+
+    .help-icon {
+        display: inline-flex;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.25);
+        color: #fff;
+        font-size: 10px;
+        align-items: center;
+        justify-content: center;
+        cursor: help;
+        font-weight: 700;
+        position: relative;
+        margin-left: 4px;
+        vertical-align: middle;
+    }
+        .help-icon .tip {
+            display: none;
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: #f4f1ea;
+            font-size: 11.5px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 5px;
+            width: 220px;
+            line-height: 1.4;
+            z-index: 10;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .help-icon:hover .tip {
+            display: block;
+        }
+        .vin-live-error {
+    display: block;
+    font-size: 11.5px;
+    color: #c62828;
+    margin-top: 3px;
+    min-height: 14px;
+}
+.vin-input.vin-valid {
+    border-color: #2e7d32;
+}
+.vin-input.vin-invalid {
+    border-color: #c62828;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tbody = document.getElementById('vehicleRows');
+        const template = document.getElementById('rowTemplate');
+
+        function reindexRows() {
+            const rows = tbody.querySelectorAll('tr.vehicle-row');
+            rows.forEach((row, i) => {
+                row.querySelectorAll('input, select').forEach(el => {
+                    if (el.name) {
+                        el.name = el.name.replace(/Vehicles\[\d+\]/, `Vehicles[${i}]`);
+                    }
+                });
+            });
+        }
+
+        // Enforce Agricultural / Suspended mutual exclusivity
+        window.enforceExclusive = function (checkbox) {
+            if (!checkbox.checked) return; // unchecking is always fine
+
+            const row = checkbox.closest('tr');
+            const agBox = row.querySelector('.ag-checkbox');
+            const suspBox = row.querySelector('.susp-checkbox');
+
+            if (checkbox === agBox) {
+                suspBox.checked = false;
+            } else if (checkbox === suspBox) {
+                agBox.checked = false;
+            }
+        };
+        window.validateVin = function (input) {
+    const errorSpan = input.parentElement.querySelector('.vin-live-error');
+    const value = input.value.trim().toUpperCase();
+    input.value = value; // auto-uppercase as they type
+
+    input.classList.remove('vin-valid', 'vin-invalid');
+    errorSpan.textContent = '';
+
+    if (value.length === 0) {
+        return; // don't nag on an empty field until they start typing
+    }
+
+    if (/[IOQ]/.test(value)) {
+        errorSpan.textContent = 'VIN cannot contain the letters I, O, or Q.';
+        input.classList.add('vin-invalid');
+        return;
+    }
+
+    if (value.length < 17) {
+        errorSpan.textContent = `${value.length} of 17 characters entered.`;
+        input.classList.add('vin-invalid');
+        return;
+    }
+
+    if (value.length === 17 && /^[A-HJ-NPR-Z0-9]{17}$/.test(value)) {
+        errorSpan.textContent = '✓ Valid VIN format';
+        input.classList.add('vin-valid');
+    }
+};
+
+        // Add blank row
+        document.getElementById('btnAddRow').addEventListener('click', function () {
+            const clone = template.content.cloneNode(true);
+            const index = tbody.querySelectorAll('tr.vehicle-row').length;
+
+            const inputs = clone.querySelectorAll('input, select');
+            inputs[0].name = `Vehicles[${index}].Id`;
+            inputs[0].value = '0';
+            inputs[1].name = `Vehicles[${index}].IsFromPriorYear`;
+            inputs[1].value = 'false';
+            inputs[2].name = `Vehicles[${index}].Vin`;
+            inputs[3].name = `Vehicles[${index}].WeightCategory`;
+            inputs[4].name = `Vehicles[${index}].IsAgricultural`;
+            inputs[5].name = `Vehicles[${index}].IsSuspended`;
+
+            tbody.appendChild(clone);
+        });
+
+        // Delete row
+        tbody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('btn-delete-row')) {
+                e.target.closest('tr').remove();
+                reindexRows();
+            }
+        });
+
+        // Add (confirm) a prior-year row
+        tbody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('btn-add-row')) {
+                const row = e.target.closest('tr');
+                row.querySelector('.confirmed-flag').value = 'true';
+                row.querySelectorAll('input, select').forEach(el => el.removeAttribute('disabled'));
+                row.querySelectorAll('input.vin-input').forEach(el => el.removeAttribute('readonly'));
+                row.classList.remove('prior-year');
+                row.classList.add('confirmed');
+                e.target.replaceWith(Object.assign(document.createElement('span'), { textContent: 'Confirmed ✓', className: 'confirmed-label' }));
+            }
+        });
+
+        // Edit row
+        tbody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('btn-edit-row')) {
+                const row = e.target.closest('tr');
+                row.querySelectorAll('input, select').forEach(el => el.removeAttribute('readonly'));
+            }
+        });
+
+        // Toggle upload section
+        document.getElementById('toggleUpload').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('uploadSection').classList.toggle('hidden');
+        });
+
+        // Upload & preview
+        document.getElementById('btnUpload').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileUpload');
+            const msgDiv = document.getElementById('uploadMessage');
+
+            if (!fileInput.files.length) {
+                msgDiv.textContent = 'Please choose a file first.';
+                return;
+            }
+
+            const existingVins = Array.from(tbody.querySelectorAll('.vin-input')).map(i => i.value.trim()).filter(v => v);
+
+            const formData = new FormData();
+            formData.append('File', fileInput.files[0]);
+            formData.append('BusinessId', document.querySelector('input[name="BusinessId"]').value);
+            existingVins.forEach(v => formData.append('existingVins', v));
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            fetch('/Filing/UploadVehicles', {
+                method: 'POST',
+                headers: token ? { 'RequestVerificationToken': token } : {},
+                body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) {
+                    msgDiv.textContent = data.message;
+                    msgDiv.style.color = '#c62828';
+                    return;
+                }
+
+                msgDiv.style.color = data.duplicateCount > 0 ? '#ef6c00' : '#2e7d32';
+                msgDiv.textContent = data.message || `${data.rows.length} vehicles ready to add.`;
+
+                data.rows.forEach(r => {
+                    const clone = template.content.cloneNode(true);
+                    const index = tbody.querySelectorAll('tr.vehicle-row').length;
+                    const inputs = clone.querySelectorAll('input, select');
+
+                    inputs[0].name = `Vehicles[${index}].Id`; inputs[0].value = '0';
+                    inputs[1].name = `Vehicles[${index}].IsFromPriorYear`; inputs[1].value = 'false';
+                    inputs[2].name = `Vehicles[${index}].Vin`; inputs[2].value = r.vin;
+                    inputs[3].name = `Vehicles[${index}].WeightCategory`; inputs[3].value = r.weightCategory || '';
+                    inputs[4].name = `Vehicles[${index}].IsAgricultural`; inputs[4].checked = r.isAgricultural;
+                    inputs[5].name = `Vehicles[${index}].IsSuspended`; inputs[5].checked = r.isSuspended;
+
+                    const trFragment = clone.querySelector('tr');
+                    if (r.isDuplicate) trFragment.classList.add('duplicate-flag');
+
+                    tbody.appendChild(clone);
+                });
+
+                fileInput.value = '';
+            })
+            .catch(() => {
+                msgDiv.textContent = 'Upload failed. Please try again.';
+                msgDiv.style.color = '#c62828';
+            });
+        });
+    });
+</script>

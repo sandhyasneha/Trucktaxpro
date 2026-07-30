@@ -1,0 +1,175 @@
+﻿@model List<TruckTaxPro.Domain.BlogPost>
+@{
+    Layout = null;
+    ViewData["Title"] = "Manage Blog Posts";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Blog Posts — TruckTaxPro Admin</title>
+    <style>
+            body {
+                font-family: 'Segoe UI', sans-serif;
+                background: #f4f1ea;
+                margin: 0;
+            }
+
+            .top-bar {
+                background: #1f3a5f;
+                color: #fff;
+                padding: 16px 32px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .top-bar a {
+                    color: #f2a93b;
+                    text-decoration: none;
+                    font-weight: 600;
+                    font-size: 13px;
+                    margin-left: 18px;
+                }
+
+            .content {
+                max-width: 900px;
+                margin: 40px auto;
+                background: #fff;
+                padding: 32px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+            }
+
+            .success-msg {
+                background: rgba(43,110,79,0.1);
+                border: 1px solid #2b6e4f;
+                color: #2b6e4f;
+                padding: 12px 16px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th {
+                background: #1f3a5f;
+                color: #fff;
+                padding: 10px;
+                text-align: left;
+                font-size: 13px;
+            }
+
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #e0e0e0;
+                font-size: 14px;
+            }
+
+            .status-pub {
+                color: #2e7d32;
+                font-weight: 600;
+            }
+
+            .status-draft {
+                color: #999;
+            }
+
+            .actions a, .actions button {
+                margin-right: 8px;
+                padding: 5px 12px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12.5px;
+                text-decoration: none;
+            }
+
+            .btn-edit {
+                background: #1565c0;
+                color: #fff;
+            }
+
+            .btn-delete {
+                background: #c62828;
+                color: #fff;
+            }
+
+            .btn-new {
+                background: #2e7d32;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 13px;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>TruckTaxPro Admin</div>
+        <div>
+            <a asp-action="Dashboard" asp-controller="Admin">Announcements</a>
+            <a asp-action="BlogList" asp-controller="Admin">Blog</a>
+            <a asp-action="Logout" asp-controller="Admin">Log Out</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Blog Posts</h2>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="success-msg">@TempData["Success"]</div>
+        }
+
+        <a href="/Admin/BlogEdit" class="btn-new">+ New Post</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model)
+                {
+                    <tr>
+                        <td>@post.Title</td>
+                        <td>/@post.Slug</td>
+                        <td>
+                            @if (post.IsPublished)
+                            {
+                                <span class="status-pub">Published</span>
+                            }
+                            else
+                            {
+                                <span class="status-draft">Draft</span>
+                            }
+                        </td>
+                        <td>@post.CreatedAt.ToString("MMM d, yyyy")</td>
+                        <td class="actions">
+                            <a href="/Admin/BlogEdit?id=@post.Id" class="btn-edit">Edit</a>
+                            <form asp-action="BlogDelete" asp-controller="Admin" method="post" style="display:inline;" onsubmit="return confirm('Delete this post?');">
+                                <input type="hidden" name="id" value="@post.Id" />
+                                <button type="submit" class="btn-delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

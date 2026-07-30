@@ -1,0 +1,120 @@
+﻿@model List<TruckTaxPro.Domain.BlogPost>
+@{
+    Layout = null;
+    ViewData["Title"] = "Blog — TruckTaxPro";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .blog-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 56px 48px 40px;
+                text-align: center;
+            }
+
+                .blog-hero h1 {
+                    font-size: 34px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                .blog-hero p {
+                    color: #C7D2DB;
+                    font-size: 15px;
+                }
+
+            .blog-list {
+                max-width: 820px;
+                margin: 0 auto;
+                padding: 48px;
+            }
+
+            .blog-card {
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 28px;
+                margin-bottom: 20px;
+                background: var(--white);
+            }
+
+                .blog-card h2 {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin-bottom: 8px;
+                }
+
+                    .blog-card h2 a {
+                        color: var(--ink);
+                    }
+
+                        .blog-card h2 a:hover {
+                            color: var(--amber-dark);
+                        }
+
+                .blog-card .date {
+                    font-size: 12.5px;
+                    color: var(--steel);
+                    font-family: 'IBM Plex Mono', monospace;
+                    margin-bottom: 12px;
+                }
+
+                .blog-card p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 14px;
+                }
+
+                .blog-card .read-more {
+                    color: var(--amber-dark);
+                    font-weight: 600;
+                    font-size: 13.5px;
+                }
+
+            .no-posts {
+                text-align: center;
+                color: var(--steel);
+                padding: 60px 20px;
+            }
+    </style>
+</head>
+<body>
+    <partial name="_Nav" />
+
+    <section class="blog-hero">
+        <h1>TruckTaxPro Blog</h1>
+        <p>Form 2290 guides, HVUT tips, and IRS updates for owner-operators and fleets.</p>
+    </section>
+
+    <div class="blog-list">
+        @if (Model.Count == 0)
+        {
+            <div class="no-posts">No posts published yet — check back soon.</div>
+        }
+        else
+        {
+            foreach (var post in Model)
+            {
+                <div class="blog-card">
+                    <div class="date">@(post.PublishedAt?.ToString("MMMM d, yyyy") ?? post.CreatedAt.ToString("MMMM d, yyyy"))</div>
+                    <h2><a href="/@post.Slug">@post.Title</a></h2>
+                    <p>@post.Summary</p>
+                    <a href="/@post.Slug" class="read-more">Read more &rarr;</a>
+                </div>
+            }
+        }
+    </div>
+
+    <partial name="_Footer" />
+</body>
+</html>

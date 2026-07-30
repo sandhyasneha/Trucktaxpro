@@ -1,0 +1,260 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TruckTaxPro — File your Form 2290 in minutes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Announcement as string))
+    {
+        <div style="background:#f2a93b;color:#1f1f1f;padding:10px 0;overflow:hidden;white-space:nowrap;position:relative;">
+            <div style="display:inline-block;padding-left:100%;animation:scroll-announcement 20s linear infinite;font-weight:600;">
+                📢 @ViewBag.Announcement
+            </div>
+        </div>
+        <style>
+                @@keyframes scroll-announcement {
+                    0% {
+                        transform: translateX(0);
+                    }
+
+                    100% {
+                        transform: translateX(-100%);
+                    }
+                }
+        </style>
+    }
+
+    <partial name="_Nav" />
+
+    <section class="hero">
+        <div>
+            <div class="eyebrow">IRS AUTHORIZED E-FILE PROVIDER</div>
+            <h1>Form 2290, filed<br>before your <em>next exit</em>.</h1>
+            <p>Enter your business, EIN and VINs once. TruckTaxPro handles the HVUT math, IRS validation and your stamped Schedule 1 — usually in under 10 minutes.</p>
+            <div class="actions">
+                <a class="btn-primary" href="/Auth/Register">File your 2290 →</a>
+                <a class="btn-ghost" href="#pricing">See pricing</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="doc-mock">
+                <div class="doc-head"><span>SCHEDULE 1 (FORM 2290)</span><span>OMB 1545-0143</span></div>
+                <div class="doc-title">Heavy Highway Vehicle Use</div>
+                <div class="doc-row"><div class="doc-bar w1"></div><div class="doc-bar w2"></div></div>
+                <div class="doc-row"><div class="doc-bar w3"></div><div class="doc-bar w1"></div></div>
+                <div class="vin-row"><span>1FUJA6CV — — — — 7 —</span><span>W</span></div>
+                <div class="vin-row"><span>1FUJA6CV — — — — 4 —</span><span>V</span></div>
+                <div class="vin-row"><span>1FUJA6CV — — — — 9 —</span><span>W</span></div>
+                <div class="stamp">STAMPED</div>
+            </div>
+            <div class="irs-badge">
+                <div class="mark">IRS</div>
+                <div class="txt"><b>Authorized</b>e-file provider</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="strip">
+        <div><div class="num">08:41</div><div class="lbl">Avg. filing time</div></div>
+        <div><div class="num">17</div><div class="lbl">Digit VIN validation</div></div>
+        <div><div class="num">99.6%</div><div class="lbl">IRS acceptance rate</div></div>
+        <div><div class="num">24/7</div><div class="lbl">Filing availability</div></div>
+    </div>
+
+    <section class="section">
+        <div class="section-head">
+            <div class="eyebrow">HOW IT WORKS</div>
+            <h2>Three stops to a stamped Schedule 1</h2>
+            <p>No separate EIN lookup screen, no re-entering the same business twice.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="marker">01</div>
+                <h3>Business & EIN</h3>
+                <p>One form for business details and EIN — plus a business type dropdown for multi-entity fleets.</p>
+            </div>
+            <div class="step">
+                <div class="marker">02</div>
+                <h3>Add your VINs</h3>
+                <p>Single vehicle or full fleet. Add VIN, remove VIN, validated to the 17-digit IRS standard as you type.</p>
+            </div>
+            <div class="step">
+                <div class="marker">03</div>
+                <h3>Pay & receive Schedule 1</h3>
+                <p>Secure payment via Authorize.Net, then your stamped Schedule 1 lands in your filing history.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="laneline"></div>
+
+    <section class="section features" id="features">
+        <div class="section-head">
+            <div class="eyebrow">BUILT FOR THE ROAD</div>
+            <h2>Filing types we cover</h2>
+        </div>
+        <div class="feat-grid">
+            <div class="feat">
+                <span class="tag">Original filing</span>
+                <h3>2290 filing</h3>
+                <p>Full HVUT filing for new and renewal vehicles, single or multi-VIN.</p>
+            </div>
+            <div class="feat">
+                <span class="tag">Mid-year change</span>
+                <h3>Amendment</h3>
+                <p>Weight increase or mileage exceeded — filed as its own guided flow.</p>
+            </div>
+            <div class="feat">
+                <span class="tag">Correction</span>
+                <h3>Vin correction</h3>
+                <p>Fix a VIN on a prior filing without starting a new 2290 from scratch.</p>
+            </div>
+            <div class="feat">
+                <span class="tag">Support</span>
+                <h3>2290 assistant</h3>
+                <p>An AI chat assistant scoped only to TruckTaxPro and Form 2290 questions.</p>
+            </div>
+            <div class="feat">
+                <span class="tag">Records</span>
+                <h3>Filing history</h3>
+                <p>Every filing, tax year and Schedule 1 in one scrollable, paginated view.</p>
+            </div>
+            <div class="feat">
+                <span class="tag">Status</span>
+                <h3>Live IRS updates</h3>
+                <p>Site-wide announcements the moment IRS e-file systems change status.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section seo-section">
+        <div class="section-head">
+            <div class="eyebrow">FORM 2290 GUIDE</div>
+            <h2>Everything you need to know about HVUT</h2>
+            <p>Straight answers for owner-operators, fleet managers and tax preparers filing heavy vehicle use tax.</p>
+        </div>
+        <div class="seo-grid">
+            <div class="seo-block">
+                <h3>What is Form 2290?</h3>
+                <p>Form 2290 is the IRS Heavy Vehicle Use Tax (HVUT) return required for trucks with a <b>taxable gross weight of 55,000 lbs or more</b>. Filing produces a stamped <b>Schedule 1</b>, which most states require for vehicle registration and DMV tag renewal.</p>
+            </div>
+            <div class="seo-block">
+                <h3>When is the 2290 due date?</h3>
+                <p>The annual HVUT tax period runs <b>July 1 through June 30</b>. Returns for vehicles in use since July are due by <b>August 31</b>. Vehicles first used later in the year follow a <b>prorated 2290</b> schedule based on first-used month.</p>
+            </div>
+            <div class="seo-block">
+                <h3>Who needs to e-file Form 2290?</h3>
+                <p>Owner-operators, trucking companies and fleets with <b>25 or more vehicles</b> are required by the IRS to e-file. Everyone else can e-file for faster processing and a same-day <b>IRS Schedule 1</b> compared to mailing a paper return.</p>
+            </div>
+            <div class="seo-block">
+                <h3>2290 Amendment filing</h3>
+                <p>File a <b>2290 amendment</b> when a vehicle's taxable gross weight increases or it exceeds the mileage-use limit (5,000 miles, or 7,500 for agricultural vehicles) after your original filing.</p>
+            </div>
+            <div class="seo-block">
+                <h3>VIN correction for Form 2290</h3>
+                <p>Entered a VIN wrong on a prior filing? A <b>2290 VIN correction</b> fixes it without refiling the entire return or paying tax again.</p>
+            </div>
+            <div class="seo-block">
+                <h3>HVUT tax calculator by weight category</h3>
+                <p>Tax owed depends on <b>taxable gross weight category (A through V)</b> and whether the vehicle is used for logging. TruckTaxPro calculates your HVUT automatically as you enter each VIN.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pricing" id="pricing">
+        <div class="section-head">
+            <div class="eyebrow">PRICING</div>
+            <h2>Simple pricing, set by us — visible to you</h2>
+            <p>Priced by fleet size — pricing shown here is fully admin-configurable.</p>
+        </div>
+        <div class="price-grid">
+            <div class="price-card">
+                <div class="plan">Single vehicle</div>
+                <div class="amt mono">$29.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>1 VIN</li>
+                    <li>E-file + Schedule 1</li>
+                    <li>Email support</li>
+                </ul>
+                <div class="btn outline">File now</div>
+            </div>
+            <div class="price-card featured">
+                <div class="plan">2 to 24 vehicles</div>
+                <div class="amt mono">$39.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>Up to 24 VINs</li>
+                    <li>Bulk VIN add/remove</li>
+                    <li>Priority chat support</li>
+                </ul>
+                <div class="btn solid">File now</div>
+            </div>
+            <div class="price-card">
+                <div class="plan">25 to 100 vehicles</div>
+                <div class="amt mono">$59.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>Up to 100 VINs</li>
+                    <li>Required e-file range</li>
+                    <li>Priority chat support</li>
+                </ul>
+                <div class="btn outline">File now</div>
+            </div>
+            <div class="price-card">
+                <div class="plan">101 to 500 vehicles</div>
+                <div class="amt mono">$99.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>Up to 500 VINs</li>
+                    <li>Bulk upload via CSV</li>
+                    <li>Dedicated support</li>
+                </ul>
+                <div class="btn outline">File now</div>
+            </div>
+        </div>
+
+        <div class="section-head" style="margin-top:48px;">
+            <div class="eyebrow">AMENDMENTS &amp; CORRECTIONS</div>
+            <h2>Already filed? Fix or update it</h2>
+        </div>
+        <div class="price-grid" style="grid-template-columns:repeat(2,1fr);max-width:560px;">
+            <div class="price-card">
+                <div class="plan">2290 amendment</div>
+                <div class="amt mono">$29.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>Weight increase</li>
+                    <li>Mileage exceeded</li>
+                    <li>Email support</li>
+                </ul>
+                <div class="btn outline">Amend now</div>
+            </div>
+            <div class="price-card">
+                <div class="plan">Vin correction</div>
+                <div class="amt mono">$9.99</div>
+                <div class="per">per filing</div>
+                <ul>
+                    <li>Single VIN fix</li>
+                    <li>No new tax due</li>
+                    <li>Email support</li>
+                </ul>
+                <div class="btn outline">Correct now</div>
+            </div>
+        </div>
+    </section>
+    <partial name="_Footer" />
+      
+
+</body>
+</html>
