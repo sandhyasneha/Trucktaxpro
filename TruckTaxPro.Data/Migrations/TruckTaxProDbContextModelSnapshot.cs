@@ -340,7 +340,7 @@ namespace TruckTaxPro.Data.Migrations
                     b.ToTable("Businesses");
                 });
 
-            modelBuilder.Entity("TruckTaxPro.Domain.TaxPeriod", b =>
+            modelBuilder.Entity("TruckTaxPro.Domain.BusinessTaxPeriod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -382,6 +382,29 @@ namespace TruckTaxPro.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
+
+                    b.ToTable("BusinessTaxPeriods");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.TaxPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaxYear")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("TaxPeriods");
                 });
@@ -472,7 +495,7 @@ namespace TruckTaxPro.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TruckTaxPro.Domain.TaxPeriod", b =>
+            modelBuilder.Entity("TruckTaxPro.Domain.BusinessTaxPeriod", b =>
                 {
                     b.HasOne("TruckTaxPro.Domain.Business", "Business")
                         .WithMany()

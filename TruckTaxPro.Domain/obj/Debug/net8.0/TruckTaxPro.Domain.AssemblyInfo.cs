@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TruckTaxPro.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6dc18ea2fc5c037d40d46f49dfae97dbbf8b014d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17067d61030b44bc40bc7c62a189fd2a00671112")]
 [assembly: System.Reflection.AssemblyProductAttribute("TruckTaxPro.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TruckTaxPro.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
