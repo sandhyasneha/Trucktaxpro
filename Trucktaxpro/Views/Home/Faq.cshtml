@@ -1,0 +1,442 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form 2290 Tax Electronic Filing | TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .pg-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+            }
+
+                .pg-hero .eyebrow {
+                    color: var(--amber);
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.1em;
+                    margin-bottom: 14px;
+                    text-transform: uppercase;
+                }
+
+                .pg-hero h1 {
+                    font-size: 38px;
+                    font-weight: 600;
+                    margin-bottom: 18px;
+                    max-width: 720px;
+                }
+
+                .pg-hero p {
+                    color: #C7D2DB;
+                    font-size: 16px;
+                    max-width: 680px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-hero .actions {
+                    display: flex;
+                    gap: 16px;
+                }
+
+            .tab-bar {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 0 48px;
+                display: flex;
+                gap: 0;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .tab-btn {
+                padding: 18px 24px;
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--steel);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                border: none;
+                background: none;
+                border-bottom: 3px solid transparent;
+                cursor: pointer;
+                font-family: 'IBM Plex Sans',sans-serif;
+            }
+
+                .tab-btn.active {
+                    color: var(--ink);
+                    border-bottom-color: var(--amber);
+                }
+
+            .tab-panel {
+                display: none;
+                padding: 56px 48px;
+                max-width: 920px;
+                margin: 0 auto;
+            }
+
+                .tab-panel.active {
+                    display: block;
+                }
+
+                .tab-panel h2 {
+                    font-size: 26px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin: 32px 0 14px;
+                }
+
+                    .tab-panel h2:first-child {
+                        margin-top: 0;
+                    }
+
+                .tab-panel p {
+                    color: var(--steel);
+                    font-size: 15px;
+                    line-height: 1.7;
+                    margin-bottom: 18px;
+                }
+
+                    .tab-panel p b {
+                        color: var(--ink);
+                    }
+
+            .reason-cards {
+                display: grid;
+                grid-template-columns: repeat(1,1fr);
+                gap: 16px;
+                margin-top: 24px;
+            }
+
+            .reason-card {
+                background: var(--cream);
+                border-radius: 8px;
+                padding: 24px 28px;
+                border: 1px solid var(--line);
+                display: flex;
+                gap: 20px;
+            }
+
+            .reason-num {
+                flex-shrink: 0;
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                background: var(--ink);
+                color: var(--amber);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 16px;
+                font-family: 'IBM Plex Mono',monospace;
+            }
+
+            .reason-card h3 {
+                font-size: 17px;
+                font-weight: 600;
+                color: var(--ink);
+                margin-bottom: 6px;
+                text-transform: none;
+                letter-spacing: 0;
+            }
+
+            .reason-card p {
+                color: var(--steel);
+                font-size: 14.5px;
+                margin: 0;
+            }
+
+            .what-you-can-list {
+                list-style: none;
+                margin: 24px 0;
+            }
+
+                .what-you-can-list li {
+                    display: flex;
+                    gap: 14px;
+                    padding: 14px 0;
+                    border-bottom: 1px solid var(--line);
+                    color: var(--ink);
+                    font-size: 15px;
+                }
+
+                    .what-you-can-list li:last-child {
+                        border-bottom: none;
+                    }
+
+                    .what-you-can-list li .dot {
+                        flex-shrink: 0;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: var(--amber);
+                        margin-top: 8px;
+                    }
+
+            .tax-formula-box {
+                background: var(--ink);
+                color: var(--cream);
+                border-radius: 8px;
+                padding: 32px;
+                margin: 24px 0;
+                text-align: center;
+            }
+
+                .tax-formula-box .formula {
+                    font-family: 'IBM Plex Mono',monospace;
+                    font-size: 22px;
+                    color: var(--amber);
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                }
+
+                .tax-formula-box p {
+                    color: #C7D2DB;
+                    font-size: 14px;
+                    margin: 0;
+                }
+
+            .tax-stat-row {
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                gap: 16px;
+                margin: 24px 0;
+            }
+
+            .tax-stat {
+                background: var(--cream);
+                border-radius: 8px;
+                padding: 24px;
+                text-align: center;
+                border: 1px solid var(--line);
+            }
+
+                .tax-stat .num {
+                    font-family: 'IBM Plex Mono',monospace;
+                    font-size: 30px;
+                    font-weight: 600;
+                    color: var(--ink);
+                }
+
+                .tax-stat .lbl {
+                    font-size: 13px;
+                    color: var(--steel);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    margin-top: 6px;
+                }
+
+            .qa-block {
+                border-bottom: 1px solid var(--line);
+                padding: 22px 0;
+            }
+
+                .qa-block:last-child {
+                    border-bottom: none;
+                }
+
+                .qa-block h3 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 8px;
+                    text-transform: none;
+                    letter-spacing: 0;
+                }
+
+                .qa-block p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin: 0;
+                }
+
+            .deadline-box {
+                background: #FDEEE0;
+                border: 1px solid var(--amber);
+                border-radius: 8px;
+                padding: 20px 24px;
+                margin: 24px 0;
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+            }
+
+                .deadline-box .badge {
+                    background: var(--amber);
+                    color: var(--amber-dark);
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    padding: 4px 10px;
+                    border-radius: 3px;
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                }
+
+                .deadline-box p {
+                    color: var(--ink);
+                    font-size: 14.5px;
+                    margin: 0;
+                }
+
+            .pg-final {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+                text-align: center;
+            }
+
+                .pg-final h3 {
+                    font-size: 26px;
+                    font-weight: 600;
+                    margin-bottom: 12px;
+                }
+
+                .pg-final p {
+                    color: #C7D2DB;
+                    font-size: 15px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-final .note {
+                    font-size: 13px;
+                    color: #9AA6AE;
+                    margin-top: 16px;
+                }
+
+                    .pg-final .note a {
+                        color: var(--amber);
+                        text-decoration: underline;
+                    }
+    </style>
+</head>
+<body>
+
+    <partial name="_Nav" />
+
+    <section class="pg-hero">
+        <div class="eyebrow">2290 FILING</div>
+        <h1>Form 2290 Tax Electronic Filing</h1>
+        <p>You must file Form 2290 and Schedule 1 for the tax period beginning July 1 and ending June 30, if a taxable highway motor vehicle is registered — or required to be registered — in your name at the time of its first use during the period, and the vehicle has a taxable gross weight of 55,000 pounds or more.</p>
+        <div class="actions">
+            <a class="btn-primary" href="/Auth/Login">Start E-Filing Now →</a>
+            <a class="btn-ghost" href="/#pricing">View Pricing</a>
+        </div>
+    </section>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="overview" onclick="showTab('overview')">Overview</button>
+        <button class="tab-btn" data-tab="why-efile" onclick="showTab('why-efile')">Why E-File</button>
+        <button class="tab-btn" data-tab="hvut" onclick="showTab('hvut')">HVUT Tax Explained</button>
+        <button class="tab-btn" data-tab="who-files" onclick="showTab('who-files')">Who Needs to File</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="overview">
+        <h2>Paper or e-file your IRS Form 2290</h2>
+        <p>E-filing is substantially quicker than paper filing Form 2290, in both filing and processing speed. Using an e-filing service helps filers finish their Form 2290 in less than twenty minutes — our system is that simple. TruckTaxPro automatically enters your information into Form 2290 and submits it to the IRS for approval. Once submitted, filers typically receive a response within fifteen to twenty minutes, and you can track your submission status at any time using your reference number.</p>
+
+        <div class="deadline-box">
+            <div class="badge">Deadline</div>
+            <p>Form 2290 is due every year by August 31 when e-filing for a full 12 months. E-filing means no waiting in line at an IRS field office, no printing and mailing forms, and no weeks-long wait for your stamped Schedule 1 — you receive it within minutes.</p>
+        </div>
+
+        <p>Not only is e-filing faster and more secure than paper filing, TruckTaxPro automatically checks your 2290 for obvious errors and inaccuracies before submission — helping prevent rejections. In the rare event your 2290 is rejected, you can correct the errors and resubmit at no additional cost.</p>
+
+        <h2>What you can do with Form 2290</h2>
+        <ul class="what-you-can-list">
+            <li><span class="dot"></span><span>Figure and pay the tax due on highway motor vehicles used during the period with a taxable gross weight of 55,000 pounds or more.</span></li>
+            <li><span class="dot"></span><span>Figure and pay the tax due on a vehicle for which you completed the suspension statement on another Form 2290, if that vehicle later exceeded the mileage use limit during the period.</span></li>
+            <li><span class="dot"></span><span>Figure and pay the tax due if, during the period, the taxable gross weight of a vehicle increases and the vehicle falls into a new category.</span></li>
+            <li><span class="dot"></span><span>Claim suspension from the tax when a vehicle is expected to be used 5,000 miles or less (7,500 miles or less for agricultural vehicles) during the period.</span></li>
+            <li><span class="dot"></span><span>Claim a credit for tax paid on vehicles that were destroyed, stolen, sold, or used 5,000 miles or less (7,500 miles or less for agricultural vehicles).</span></li>
+            <li><span class="dot"></span><span>Figure and pay the tax due on a used taxable vehicle acquired and used during the period.</span></li>
+        </ul>
+    </div>
+
+    <div class="tab-panel" data-panel="why-efile">
+        <h2>Top five reasons to e-file IRS Form 2290 with TruckTaxPro.com</h2>
+        <div class="reason-cards">
+            <div class="reason-card">
+                <div class="reason-num">1</div>
+                <div><h3>Accurate and easy</h3><p>TruckTaxPro is the best way to file an accurate Form 2290 HVUT tax return. Our software does the math for you and guides you every step of the way — much easier than doing taxes by hand and mailing paper forms.</p></div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-num">2</div>
+                <div><h3>Convenient options</h3><p>Spare yourself the stress and hand cramps. E-filing carries far fewer chances for errors than paper filing. Save time, money, and energy by going paperless — and get immediate acknowledgement on completion and submission of your tax return.</p></div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-num">3</div>
+                <div><h3>Safe and secure</h3><p>At TruckTaxPro, we place the highest importance on protecting your privacy. Personal information shared with us is transmitted through an encrypted format using Secured Socket Layers (SSL), following industry best practices to keep you safe.</p></div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-num">4</div>
+                <div><h3>Faster</h3><p>TruckTaxPro is an IRS-certified provider for Heavy Highway Vehicle Use Tax (HVUT) returns and Form 2290 e-filing. Certified providers allow HVUT taxpayers to file online, where returns are processed faster and with fewer errors — meaning quicker refunds and less back-and-forth with the IRS.</p></div>
+            </div>
+            <div class="reason-card">
+                <div class="reason-num">5</div>
+                <div><h3>Payment flexibility</h3><p>Authorize an electronic funds withdrawal, use a credit or debit card, or enroll in the U.S. Treasury's Electronic Federal Tax Payment System (EFTPS). Electronic payments are available 24/7 and are convenient, safe, and secure.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-panel" data-panel="hvut">
+        <h2>The Heavy Vehicle Use Tax</h2>
+        <p>The Heavy Vehicle Use Tax is a federal tax collected on vehicles that have a gross weight of 55,000 pounds or more and that operate on public highways for a distance greater than 5,000 miles in a year. Taxes are collected annually and fund highway construction and maintenance.</p>
+
+        <div class="tax-formula-box">
+            <div class="formula">$100 + $22 per 1,000 lbs over 55,000 lbs</div>
+            <p>The annual HVUT amount, up to the maximum below</p>
+        </div>
+
+        <div class="tax-stat-row">
+            <div class="tax-stat"><div class="num">$550</div><div class="lbl">Maximum HVUT (75,000+ lbs)</div></div>
+            <div class="tax-stat"><div class="num">55,000 lbs</div><div class="lbl">Minimum taxable gross weight</div></div>
+        </div>
+
+        <p>The maximum HVUT amount is $550, which you'll hit once your gross weight reaches 75,000 pounds or more — so if you're above 75,000 lbs, you'll be paying the max regardless of exactly how much heavier your vehicle is.</p>
+    </div>
+
+    <div class="tab-panel" data-panel="who-files">
+        <h2>Who needs to file?</h2>
+        <div class="qa-block">
+            <h3>Who needs to file Form 2290?</h3>
+            <p>Anyone who operates a heavy motor vehicle over the gross weight of 55,000 lbs or more on a US public highway must file the Heavy Vehicle Use Tax return.</p>
+        </div>
+        <div class="qa-block">
+            <h3>But I live in Canada — do I have to file?</h3>
+            <p>Yes, but only on those vehicles you want to operate in the United States. If your motor vehicle never enters the United States, you don't have to file. If your vehicle falls under the Mileage Use Limit exemption, you can include it on your return but request a tax suspension. Ask us if you need to file and whether your vehicle qualifies for an exemption.</p>
+        </div>
+    </div>
+
+    <section class="pg-final">
+        <h3>Ready to e-file with TruckTaxPro?</h3>
+        <p>Join hundreds of thousands of truckers, fleets, and tax preparers who trust TruckTaxPro for fast, secure, IRS-authorized e-filing.</p>
+        <a class="btn-primary" href="/Auth/Login" style="display:inline-block;">Start E-Filing Now →</a>
+        <div class="note">No account? <a href="/Auth/Register">Get started in 60 seconds</a>. Pay only when you file.</div>
+    </section>
+
+    <partial name="_Footer" />
+
+    <script>
+            function showTab(name) {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-tab') === name);
+                });
+                document.querySelectorAll('.tab-panel').forEach(panel => {
+                    panel.classList.toggle('active', panel.getAttribute('data-panel') === name);
+                });
+                window.scrollTo({ top: document.querySelector('.tab-bar').offsetTop, behavior: 'smooth' });
+            }
+    </script>
+
+</body>
+</html>

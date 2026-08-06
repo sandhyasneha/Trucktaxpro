@@ -1,0 +1,379 @@
+﻿@model Trucktaxpro.Models.TaxPeriodViewModel
+@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = 2,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+
+    var minMonth = $"{Model.TaxYearStart}-07";
+    var maxMonth = $"{Model.TaxYearStart + 1}-06";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Period — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            body {
+                background: var(--cream);
+            }
+
+            .app-bar {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 18px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .app-bar .logo {
+                    font-family: 'Oswald',sans-serif;
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+
+                    .app-bar .logo span {
+                        color: var(--amber);
+                    }
+
+                .app-bar a.exit {
+                    color: #C7D2DB;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .app-bar .user-block {
+                    display: flex;
+                    align-items: center;
+                    gap: 18px;
+                }
+
+                    .app-bar .user-block .welcome {
+                        color: var(--cream);
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    .app-bar .user-block button.signout {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        color: #C7D2DB;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                        cursor: pointer;
+                    }
+
+            .step-tracker {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 20px 40px;
+                display: flex;
+                gap: 0;
+                overflow-x: auto;
+            }
+
+            .step-pill {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 18px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                white-space: nowrap;
+            }
+
+                .step-pill .num {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--line);
+                    color: var(--steel);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    font-family: 'IBM Plex Mono',monospace;
+                    flex-shrink: 0;
+                }
+
+                .step-pill.active {
+                    background: rgba(242,169,59,0.12);
+                    color: var(--ink);
+                }
+
+                    .step-pill.active .num {
+                        background: var(--ink);
+                        color: var(--amber);
+                    }
+
+            .step-arrow {
+                color: var(--line);
+                padding: 0 4px;
+                align-self: center;
+            }
+
+            .form-wrap {
+                max-width: 760px;
+                margin: 0 auto;
+                padding: 48px 24px 80px;
+            }
+
+            .form-card {
+                background: var(--white);
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                padding: 40px;
+            }
+
+                .form-card h1 {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin-bottom: 6px;
+                }
+
+                .form-card .sub {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 32px;
+                }
+
+            .form-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+                .form-group label {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 7px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
+
+                .form-group .req {
+                    color: #B23A2E;
+                }
+
+            .help-icon {
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                background: var(--line);
+                color: var(--steel);
+                font-size: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: help;
+                font-weight: 700;
+                text-transform: none;
+                letter-spacing: 0;
+                position: relative;
+            }
+
+                .help-icon .tip {
+                    display: none;
+                    position: absolute;
+                    bottom: 22px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--ink);
+                    color: var(--cream);
+                    font-size: 11.5px;
+                    font-weight: 400;
+                    padding: 8px 12px;
+                    border-radius: 5px;
+                    width: 240px;
+                    line-height: 1.4;
+                    z-index: 5;
+                }
+
+                .help-icon:hover .tip {
+                    display: block;
+                }
+
+            .form-group input, .form-group select {
+                width: 100%;
+                padding: 11px 12px;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                font-size: 14px;
+                font-family: 'IBM Plex Sans',sans-serif;
+                color: var(--ink);
+                background: var(--white);
+            }
+
+                .form-group input:focus, .form-group select:focus {
+                    outline: 2px solid var(--amber);
+                    outline-offset: 1px;
+                    border-color: var(--amber);
+                }
+
+            .field-error {
+                color: #B23A2E;
+                font-size: 12px;
+                margin-top: 5px;
+                display: block;
+            }
+
+            .checkbox-group {
+                display: flex;
+                align-items: flex-start;
+            }
+
+            .checkbox-label {
+                display: flex !important;
+                align-items: center;
+                gap: 10px;
+                text-transform: none !important;
+                letter-spacing: 0 !important;
+                font-size: 14.5px !important;
+                font-weight: 500 !important;
+                color: var(--ink) !important;
+                cursor: pointer;
+            }
+
+                .checkbox-label input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: var(--amber);
+                    cursor: pointer;
+                    flex-shrink: 0;
+                }
+
+            .submit-row {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-top: 12px;
+            }
+
+            .submit-btn {
+                padding: 14px 34px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+            }
+
+                .submit-btn:hover {
+                    background: #1A3A56;
+                }
+
+            .prev-link {
+                color: var(--steel);
+                text-decoration: underline;
+                font-size: 14px;
+                font-weight: 500;
+            }
+    </style>
+</head>
+<body>
+
+    <partial name="_WizardChrome" model="chromeModel" />
+
+    <div class="form-wrap">
+        <div class="form-card">
+            <h1>Tax Period</h1>
+            <p class="sub">Filing for <strong>@ViewBag.BusinessName</strong>. Select the tax year and first used month for this return.</p>
+
+            <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:20px;"></div>
+
+            <form asp-action="TaxPeriod" asp-controller="Filing" method="post" novalidate>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="BusinessId" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="TaxYearStart">
+                            Period <span class="req">*</span>
+                            <span class="help-icon">?<span class="tip">The IRS HVUT tax year runs July 1 through June 30.</span></span>
+                        </label>
+                        <select asp-for="TaxYearStart" id="taxYearSelect">
+                            @for (int y = DateTime.UtcNow.Year - 1; y <= DateTime.UtcNow.Year + 1; y++)
+                            {
+                                <option value="@y" selected="@(y == Model.TaxYearStart)">July @y - June @(y + 1)</option>
+                            }
+                        </select>
+                        <span asp-validation-for="TaxYearStart" class="field-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstUsedMonth">
+                            First Used Month <span class="req">*</span>
+                            <span class="help-icon">?<span class="tip">The month you first drove this vehicle on a public highway during the tax period.</span></span>
+                        </label>
+                        <input asp-for="FirstUsedMonth" type="month" id="firstUsedMonthInput" min="@minMonth" max="@maxMonth" />
+                        <span asp-validation-for="FirstUsedMonth" class="field-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input asp-for="IsFinalReturn" type="checkbox" />
+                        Is Final Return?
+                        <span class="help-icon">?<span class="tip">Check only if you don't expect to file Form 2290 again &mdash; for example, you've sold your fleet or ceased operations.</span></span>
+                    </label>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input asp-for="ConsentToDisclosure" type="checkbox" />
+                        Consent to Disclosure?
+                        <span class="help-icon">?<span class="tip">Authorizes the IRS to discuss this return with the third-party designee named on your business profile.</span></span>
+                    </label>
+                </div>
+
+                <div class="submit-row" style="justify-content:space-between;">
+                    <a href="/Filing/SelectBusiness" class="prev-link">&larr; Previous Step</a>
+                    <button type="submit" class="submit-btn">Next Step &rarr;</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+            // Keep the First Used Month picker's allowed range in sync with the selected tax period,
+            // so a trucker can't accidentally pick a month outside July-June without an error round-trip.
+            document.getElementById('taxYearSelect').addEventListener('change', function() {
+                var year = parseInt(this.value, 10);
+                var monthInput = document.getElementById('firstUsedMonthInput');
+                monthInput.min = year + '-07';
+                monthInput.max = (year + 1) + '-06';
+                monthInput.value = '';
+            });
+    </script>
+
+</body>
+</html>

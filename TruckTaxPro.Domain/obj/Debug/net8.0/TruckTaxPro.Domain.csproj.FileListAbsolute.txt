@@ -1,0 +1,11 @@
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\bin\Debug\net8.0\TruckTaxPro.Domain.deps.json
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\bin\Debug\net8.0\TruckTaxPro.Domain.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\bin\Debug\net8.0\TruckTaxPro.Domain.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.AssemblyInfoInputs.cache
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.AssemblyInfo.cs
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.csproj.CoreCompileInputs.cache
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\refint\TruckTaxPro.Domain.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\TruckTaxPro.Domain.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Domain\obj\Debug\net8.0\ref\TruckTaxPro.Domain.dll

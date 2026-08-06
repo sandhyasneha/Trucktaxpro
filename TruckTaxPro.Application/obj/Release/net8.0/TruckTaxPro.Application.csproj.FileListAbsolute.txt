@@ -1,0 +1,17 @@
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Application.deps.json
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Application.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Application.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Data.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Domain.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Data.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Application\bin\Release\net8.0\TruckTaxPro.Domain.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.csproj.AssemblyReference.cache
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.AssemblyInfoInputs.cache
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.AssemblyInfo.cs
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.csproj.CoreCompileInputs.cache
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTax.4BC170E4.Up2Date
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\refint\TruckTaxPro.Application.dll
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\TruckTaxPro.Application.pdb
+C:\Users\chan2\source\repos\TruckTaxPro.Application\obj\Release\net8.0\ref\TruckTaxPro.Application.dll

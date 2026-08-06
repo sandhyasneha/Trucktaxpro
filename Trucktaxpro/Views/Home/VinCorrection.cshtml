@@ -1,0 +1,323 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form 2290 VIN Correction E-File Online | TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            .pg-hero {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+            }
+
+                .pg-hero .eyebrow {
+                    color: var(--amber);
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.1em;
+                    margin-bottom: 14px;
+                    text-transform: uppercase;
+                }
+
+                .pg-hero h1 {
+                    font-size: 38px;
+                    font-weight: 600;
+                    margin-bottom: 18px;
+                    max-width: 720px;
+                }
+
+                .pg-hero p {
+                    color: #C7D2DB;
+                    font-size: 16px;
+                    max-width: 640px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-hero .actions {
+                    display: flex;
+                    gap: 16px;
+                    margin-bottom: 32px;
+                }
+
+                .pg-hero .stat-strip {
+                    display: flex;
+                    gap: 32px;
+                    flex-wrap: wrap;
+                }
+
+                    .pg-hero .stat-strip .stat {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        color: #C7D2DB;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+
+                        .pg-hero .stat-strip .stat .check {
+                            width: 22px;
+                            height: 22px;
+                            border-radius: 50%;
+                            background: var(--amber);
+                            color: var(--amber-dark);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 13px;
+                            font-weight: 700;
+                            flex-shrink: 0;
+                        }
+
+            .section-block {
+                padding: 64px 48px;
+            }
+
+                .section-block.alt {
+                    background: var(--cream);
+                }
+
+                .section-block .tag-eyebrow {
+                    color: var(--amber-dark);
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                }
+
+                .section-block h2 {
+                    font-size: 30px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 8px;
+                }
+
+                .section-block > p.lead {
+                    color: var(--steel);
+                    font-size: 15.5px;
+                    margin-bottom: 36px;
+                    max-width: 760px;
+                }
+
+            .step-cards {
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                gap: 24px;
+                margin-bottom: 8px;
+            }
+
+            .step-card {
+                background: var(--white);
+                border-radius: 8px;
+                padding: 32px;
+                border: 1px solid var(--line);
+            }
+
+            .step-num {
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                background: var(--ink);
+                color: var(--amber);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 18px;
+                font-family: 'IBM Plex Mono',monospace;
+                margin-bottom: 20px;
+                flex-shrink: 0;
+            }
+
+            .step-card h3 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--ink);
+                text-transform: none;
+                letter-spacing: 0;
+                margin-bottom: 8px;
+            }
+
+            .step-card p {
+                color: var(--steel);
+                font-size: 14.5px;
+            }
+
+            .pg-faq {
+                padding: 64px 48px;
+                background: var(--white);
+                max-width: 880px;
+                margin: 0 auto;
+            }
+
+                .pg-faq h2 {
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 6px;
+                }
+
+                .pg-faq > p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 32px;
+                }
+
+            .faq-item {
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                margin-bottom: 10px;
+                overflow: hidden;
+            }
+
+            .faq-question {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 16px 20px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                color: var(--ink);
+            }
+
+                .faq-question .plus {
+                    flex-shrink: 0;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--cream);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    color: var(--ink);
+                    font-family: 'IBM Plex Mono',monospace;
+                    transition: transform 0.15s ease;
+                }
+
+            .faq-item.open .faq-question .plus {
+                transform: rotate(45deg);
+            }
+
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease;
+                padding: 0 20px;
+                color: var(--steel);
+                font-size: 14.5px;
+                line-height: 1.6;
+            }
+
+            .faq-item.open .faq-answer {
+                max-height: 300px;
+                padding: 0 20px 20px;
+            }
+
+            .pg-final {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 64px 48px;
+                text-align: center;
+            }
+
+                .pg-final h3 {
+                    font-size: 26px;
+                    font-weight: 600;
+                    margin-bottom: 12px;
+                }
+
+                .pg-final p {
+                    color: #C7D2DB;
+                    font-size: 15px;
+                    margin-bottom: 28px;
+                }
+
+                .pg-final .note {
+                    font-size: 13px;
+                    color: #9AA6AE;
+                    margin-top: 16px;
+                }
+
+                    .pg-final .note a {
+                        color: var(--amber);
+                        text-decoration: underline;
+                    }
+    </style>
+</head>
+<body>
+
+    <partial name="_Nav" />
+
+    <section class="pg-hero">
+        <div class="eyebrow">IRS-AUTHORIZED E-FILE PROVIDER</div>
+        <h1>Form 2290 VIN Correction E-file Online</h1>
+        <p>A Form 2290 VIN correction lets you fix an incorrect Vehicle Identification Number on a previously filed and accepted return without paying additional HVUT. TruckTaxPro processes VIN corrections online through the IRS e-file system and delivers a new stamped Schedule 1 with the correct VIN in minutes at no extra cost.</p>
+        <div class="actions">
+            <a class="btn-primary" href="/Auth/Login">Start E-Filing Now →</a>
+            <a class="btn-ghost" href="/#pricing">View Pricing</a>
+        </div>
+        <div class="stat-strip">
+            <div class="stat"><span class="check">&#10003;</span> Stamped Schedule 1 in minutes</div>
+            <div class="stat"><span class="check">&#10003;</span> Free VIN corrections</div>
+        </div>
+    </section>
+
+    <section class="section-block">
+        <div class="tag-eyebrow">How it works</div>
+        <h2>How to file a Form 2290 VIN Correction online</h2>
+        <p class="lead">Fix a typo on your Schedule 1 in three quick steps.</p>
+        <div class="step-cards">
+            <div class="step-card"><div class="step-num">1</div><h3>Log in and select the return</h3><p>Choose the 2290 return that contains the incorrect VIN from your dashboard.</p></div>
+            <div class="step-card"><div class="step-num">2</div><h3>Enter the corrected VIN</h3><p>Our validator flags typos and confirms VIN format before submission.</p></div>
+            <div class="step-card"><div class="step-num">3</div><h3>Receive updated Schedule 1</h3><p>The IRS issues a corrected stamped Schedule 1 within minutes.</p></div>
+        </div>
+    </section>
+
+    <section class="section-block alt">
+        <div class="tag-eyebrow">What qualifies</div>
+        <h2>Common VIN correction scenarios</h2>
+        <p class="lead">The IRS allows VIN corrections for these cases:</p>
+        <div class="step-cards">
+            <div class="step-card"><div class="step-num">1</div><h3>Transposed characters</h3><p>Two digits swapped (e.g., 1HG becomes 1GH).</p></div>
+            <div class="step-card"><div class="step-num">2</div><h3>Wrong letter/number</h3><p>O vs 0 or I vs 1 confusion is common on handwritten forms.</p></div>
+            <div class="step-card"><div class="step-num">3</div><h3>Missing character</h3><p>A dropped digit turns a 17-character VIN into 16 — requires correction.</p></div>
+        </div>
+    </section>
+
+    <section class="pg-faq">
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything truckers ask about Form 2290 VIN correction e-file online.</p>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>How do I correct a wrong VIN on my Form 2290?</span><span class="plus">+</span></div><div class="faq-answer"><p>Log in to TruckTaxPro, select the accepted return, choose "VIN Correction," enter the corrected VIN, and submit. The IRS reissues a new stamped Schedule 1 with the corrected VIN — usually within minutes.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>Is Form 2290 VIN correction free?</span><span class="plus">+</span></div><div class="faq-answer"><p>Yes. TruckTaxPro offers unlimited free VIN corrections for any paid 2290 return filed on our platform. No additional HVUT is owed for a VIN correction.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>How long does a VIN correction take?</span><span class="plus">+</span></div><div class="faq-answer"><p>Most VIN corrections are IRS-accepted within minutes. You'll receive an updated stamped Schedule 1 by email as soon as the IRS processes the amendment.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>Can I file a VIN correction for a return I filed elsewhere?</span><span class="plus">+</span></div><div class="faq-answer"><p>Yes. TruckTaxPro can e-file a VIN correction even if the original 2290 was filed with another provider or by paper. A small processing fee may apply.</p></div></div>
+        <div class="faq-item"><div class="faq-question" onclick="toggleItem(this)"><span>What if my VIN correction is rejected?</span><span class="plus">+</span></div><div class="faq-answer"><p>Rejections usually result from a VIN mismatch with IRS records. Our support team helps you review and re-submit at no extra cost.</p></div></div>
+    </section>
+
+    <section class="pg-final">
+        <h3>Ready to e-file with TruckTaxPro?</h3>
+        <p>Join hundreds of thousands of truckers, fleets, and tax preparers who trust TruckTaxPro for fast, secure, IRS-authorized e-filing.</p>
+        <a class="btn-primary" href="/Auth/Login" style="display:inline-block;">Start E-Filing Now →</a>
+        <div class="note">No account? <a href="/Auth/Register">Get started in 60 seconds</a>. Pay only when you file.</div>
+    </section>
+
+    <partial name="_Footer" />
+
+    <script>
+            function toggleItem(headerEl) {
+                headerEl.parentElement.classList.toggle('open');
+            }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+﻿@model Trucktaxpro.Models.BusinessListViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Business — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            body {
+                background: var(--cream);
+            }
+
+            .app-bar {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 18px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .app-bar .logo {
+                    font-family: 'Oswald',sans-serif;
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+
+                    .app-bar .logo span {
+                        color: var(--amber);
+                    }
+
+                .app-bar a.exit {
+                    color: #C7D2DB;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .app-bar .user-block {
+                    display: flex;
+                    align-items: center;
+                    gap: 18px;
+                }
+
+                    .app-bar .user-block .welcome {
+                        color: var(--cream);
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    .app-bar .user-block button.signout {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        color: #C7D2DB;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                        cursor: pointer;
+                    }
+
+            .step-tracker {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 20px 40px;
+                display: flex;
+                gap: 0;
+                overflow-x: auto;
+            }
+
+            .step-pill {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 18px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                white-space: nowrap;
+            }
+
+                .step-pill .num {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--line);
+                    color: var(--steel);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    font-family: 'IBM Plex Mono',monospace;
+                    flex-shrink: 0;
+                }
+
+                .step-pill.active {
+                    background: rgba(242,169,59,0.12);
+                    color: var(--ink);
+                }
+
+                    .step-pill.active .num {
+                        background: var(--ink);
+                        color: var(--amber);
+                    }
+
+            .step-arrow {
+                color: var(--line);
+                padding: 0 4px;
+                align-self: center;
+            }
+
+            .form-wrap {
+                max-width: 760px;
+                margin: 0 auto;
+                padding: 48px 24px 80px;
+            }
+
+            .form-card {
+                background: var(--white);
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                padding: 40px;
+            }
+
+                .form-card h1 {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin-bottom: 6px;
+                }
+
+                .form-card .sub {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    margin-bottom: 32px;
+                }
+
+            .submit-row {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 12px;
+            }
+
+            .submit-btn {
+                padding: 14px 34px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+            }
+
+                .submit-btn:hover {
+                    background: #1A3A56;
+                }
+
+                .submit-btn:disabled {
+                    background: var(--line);
+                    color: var(--steel);
+                    cursor: not-allowed;
+                }
+
+            .business-list {
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                overflow: hidden;
+                margin-bottom: 24px;
+            }
+
+            .business-option {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 18px;
+                border-bottom: 1px solid var(--line);
+                cursor: pointer;
+                font-size: 15px;
+                color: var(--ink);
+            }
+
+                .business-option:last-child {
+                    border-bottom: none;
+                }
+
+                .business-option:hover {
+                    background: rgba(242,169,59,0.06);
+                }
+
+                .business-option input[type="radio"] {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: var(--amber);
+                    cursor: pointer;
+                }
+
+            .empty-state {
+                color: var(--steel);
+                font-size: 14.5px;
+                margin-bottom: 24px;
+            }
+
+            .add-business-link {
+                display: inline-block;
+                margin-top: 8px;
+                color: var(--ink);
+                font-weight: 600;
+                font-size: 14px;
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+
+    @{
+        var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+        {
+            Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+            CurrentStep = 1
+        };
+    }
+    <partial name="_WizardChrome" model="chromeModel" />
+
+    <div class="form-wrap">
+        <div class="form-card">
+            <h1>Select Your Business</h1>
+            <p class="sub">Choose the business you're filing for, or add a new one. Tax preparers can manage multiple businesses here.</p>
+
+            @if (!Model.Businesses.Any())
+            {
+                <p class="empty-state">You haven't added a business yet. Add one below to get started.</p>
+            }
+            else
+            {
+                <form asp-action="StartFiling" asp-controller="Filing" method="post">
+                    <div class="business-list">
+                        @for (int i = 0; i < Model.Businesses.Count; i++)
+                        {
+                            var b = Model.Businesses[i];
+                            <label class="business-option">
+                                <input type="radio" name="businessId" value="@b.Id" required @(i == 0 ? "checked" : "") />
+                                <span>@b.BusinessName</span>
+                            </label>
+                        }
+                    </div>
+                    <div class="submit-row">
+                        <button type="submit" class="submit-btn">Start New Filing &rarr;</button>
+                    </div>
+                </form>
+            }
+
+            <a href="/Filing/Business" class="add-business-link">+ Add New Business</a>
+        </div>
+    </div>
+
+</body>
+</html>

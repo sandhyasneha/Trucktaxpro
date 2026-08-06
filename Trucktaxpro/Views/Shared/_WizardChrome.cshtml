@@ -1,0 +1,44 @@
+﻿@model Trucktaxpro.Models.WizardChromeViewModel
+@using Microsoft.AspNetCore.Identity
+@using TruckTaxPro.Data
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var displayName = currentUser?.FullName;
+
+    if (!string.IsNullOrWhiteSpace(displayName))
+    {
+        displayName = displayName.Split(' ')[0];
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.ActiveBusinessName))
+    {
+        displayName = Model.ActiveBusinessName;
+    }
+    else
+    {
+        displayName = "there";
+    }
+}
+<div class="app-bar">
+    <div class="logo">TRUCK<span>TAX</span>PRO</div>
+    <div class="user-block">
+        <span class="welcome">Welcome, @displayName</span>
+        <form asp-controller="Auth" asp-action="Logout" method="post" style="margin:0;">
+            <button type="submit" class="signout">Sign Out</button>
+        </form>
+        <a href="/" class="exit">Exit to Home</a>
+    </div>
+</div>
+
+<div class="step-tracker">
+    @for (int i = 0; i < Model.Steps.Count; i++)
+    {
+        var stepNum = i + 1;
+        var cls = stepNum == Model.CurrentStep ? "step-pill active" : "step-pill";
+        <div class="@cls"><span class="num">@stepNum</span> @Model.Steps[i]</div>
+        if (i < Model.Steps.Count - 1)
+        {
+            <span class="step-arrow">&rsaquo;</span>
+        }
+    }
+</div>
