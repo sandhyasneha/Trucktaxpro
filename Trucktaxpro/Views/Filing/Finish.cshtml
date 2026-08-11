@@ -1,0 +1,332 @@
+﻿@model Trucktaxpro.Models.FinishViewModel
+@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = 6,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filing Submitted — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            body {
+                background: var(--cream);
+            }
+
+            .app-bar {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 18px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .app-bar .logo {
+                    font-family: 'Oswald',sans-serif;
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+
+                    .app-bar .logo span {
+                        color: var(--amber);
+                    }
+
+                .app-bar a.exit {
+                    color: #C7D2DB;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .app-bar .user-block {
+                    display: flex;
+                    align-items: center;
+                    gap: 18px;
+                }
+
+                    .app-bar .user-block .welcome {
+                        color: var(--cream);
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    .app-bar .user-block button.signout {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        color: #C7D2DB;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                        cursor: pointer;
+                    }
+
+            .step-tracker {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 20px 40px;
+                display: flex;
+                gap: 0;
+                overflow-x: auto;
+            }
+
+            .step-pill {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 18px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                white-space: nowrap;
+            }
+
+                .step-pill .num {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--line);
+                    color: var(--steel);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    font-family: 'IBM Plex Mono',monospace;
+                    flex-shrink: 0;
+                }
+
+                .step-pill.active {
+                    background: rgba(242,169,59,0.12);
+                    color: var(--ink);
+                }
+
+                    .step-pill.active .num {
+                        background: var(--ink);
+                        color: var(--amber);
+                    }
+
+            .step-arrow {
+                color: var(--line);
+                padding: 0 4px;
+                align-self: center;
+            }
+
+            .finish-wrap {
+                max-width: 640px;
+                margin: 60px auto 100px;
+                padding: 0 24px;
+                text-align: center;
+            }
+
+            .status-card {
+                background: var(--white);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 44px 36px;
+            }
+
+            .spinner {
+                width: 52px;
+                height: 52px;
+                margin: 0 auto 20px;
+                border: 4px solid var(--line);
+                border-top-color: var(--amber);
+                border-radius: 50%;
+                animation: spin 0.9s linear infinite;
+            }
+
+            @@keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            .check-icon {
+                width: 56px;
+                height: 56px;
+                margin: 0 auto 18px;
+                border-radius: 50%;
+                background: #1E7E34;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 30px;
+            }
+
+            .status-title {
+                font-family: 'Oswald', sans-serif;
+                font-size: 22px;
+                font-weight: 600;
+                color: var(--ink);
+                margin-bottom: 8px;
+            }
+
+            .status-message {
+                color: var(--steel);
+                font-size: 14.5px;
+                line-height: 1.6;
+                margin-bottom: 22px;
+            }
+
+            .confirmation-box {
+                background: var(--cream);
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                padding: 12px 18px;
+                display: inline-block;
+                margin-bottom: 22px;
+            }
+
+                .confirmation-box .label {
+                    font-size: 11.5px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    color: var(--steel);
+                }
+
+                .confirmation-box .value {
+                    font-family: 'IBM Plex Sans', monospace;
+                    font-weight: 600;
+                    font-size: 15px;
+                    color: var(--ink);
+                }
+
+            .btn {
+                display: inline-block;
+                padding: 12px 28px;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 13.5px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                text-decoration: none;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background: var(--ink);
+                color: var(--cream);
+            }
+
+            .btn-secondary {
+                background: var(--white);
+                color: var(--ink);
+                border: 1px solid var(--line);
+                margin-left: 10px;
+            }
+    </style>
+</head>
+<body>
+    <partial name="_WizardChrome" model="chromeModel" />
+    <div class="finish-wrap">
+        <div class="status-card" id="statusCard">
+            <!-- content injected by JS based on live status -->
+        </div>
+    </div>
+
+    <script>
+            const businessTaxPeriodId = @Model.BusinessTaxPeriodId;
+            const card = document.getElementById('statusCard');
+            let polling = null;
+
+            function renderProcessing(confirmationNumber) {
+                card.innerHTML = `
+                    <div class="spinner"></div>
+                    <div class="status-title">We're processing your E-file</div>
+                    <div class="status-message">
+                        Your IRS payment and service fee were received. We're now transmitting your Form 2290
+                        to the IRS. You'll receive your stamped Schedule 1 by email within a few minutes —
+                        this page will update automatically once it's ready.
+                    </div>
+                    <div class="confirmation-box">
+                        <div class="label">Confirmation Number</div>
+                        <div class="value">${confirmationNumber}</div>
+                    </div>
+                `;
+            }
+
+            function renderAccepted(confirmationNumber, schedule1Url) {
+                card.innerHTML = `
+                    <div class="check-icon">&#10003;</div>
+                    <div class="status-title">Your Schedule 1 is ready</div>
+                    <div class="status-message">
+                        The IRS has accepted your Form 2290 filing. Your stamped Schedule 1 has also been
+                        emailed to you for your records.
+                    </div>
+                    <div class="confirmation-box">
+                        <div class="label">Confirmation Number</div>
+                        <div class="value">${confirmationNumber}</div>
+                    </div>
+                    <div>
+                        <a href="${schedule1Url}" class="btn btn-primary">Download Schedule 1</a>
+                        <a href="@Url.Action("SelectBusiness")" class="btn btn-secondary">Back to Dashboard</a>
+                    </div>
+                `;
+            }
+
+            function renderRejected(confirmationNumber) {
+                card.innerHTML = `
+                    <div class="status-title">There was an issue with your filing</div>
+                    <div class="status-message">
+                        The IRS was unable to accept this filing as submitted. Our support team has been
+                        notified and will reach out to help resolve it.
+                    </div>
+                    <div class="confirmation-box">
+                        <div class="label">Confirmation Number</div>
+                        <div class="value">${confirmationNumber}</div>
+                    </div>
+                    <a href="@Url.Action("SelectBusiness")" class="btn btn-secondary">Back to Dashboard</a>
+                `;
+            }
+
+            async function checkStatus() {
+                try {
+                    const res = await fetch('@Url.Action("GetFilingStatus")?businessTaxPeriodId=' + businessTaxPeriodId);
+                    const data = await res.json();
+
+                    if (data.status === 'Accepted') {
+                        renderAccepted(data.confirmationNumber, data.schedule1Url);
+                        clearInterval(polling);
+                    } else if (data.status === 'Rejected') {
+                        renderRejected(data.confirmationNumber);
+                        clearInterval(polling);
+                    } else {
+                        renderProcessing(data.confirmationNumber);
+                    }
+                } catch (err) {
+                    // keep showing the last known state; try again on next interval
+                }
+            }
+
+            // Render immediately from server-rendered model, then poll for updates.
+            @if (Model.Status == "Accepted")
+            {
+                    <text>renderAccepted('@Model.ConfirmationNumber', '@Model.Schedule1Url');</text>
+            }
+            else if (Model.Status == "Rejected")
+            {
+                    <text>renderRejected('@Model.ConfirmationNumber');</text>
+            }
+            else
+            {
+                    <text>
+                        renderProcessing('@Model.ConfirmationNumber');
+                        polling = setInterval(checkStatus, 5000);
+                    </text>
+            }
+    </script>
+</body>
+</html>

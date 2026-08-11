@@ -363,6 +363,25 @@ namespace TruckTaxPro.Data.Migrations
                     b.Property<DateTime>("FirstUsedMonth")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IncludeCredit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IncludePriorYearSoldSuspended")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IncludeSuspended")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IncludeTaxable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IrsConfirmationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IrsSubmissionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsFinalReturn")
                         .HasColumnType("bit");
 
@@ -386,6 +405,304 @@ namespace TruckTaxPro.Data.Migrations
                     b.ToTable("BusinessTaxPeriods");
                 });
 
+            modelBuilder.Entity("TruckTaxPro.Domain.CreditVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuyerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CreditAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FirstUsedMonthPriorYear")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsLogging")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("PreviouslyReportedTax")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TaxAmountUsed")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("UnitNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeightCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("CreditVehicles");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.DiscountCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("FlatAmountOff")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("PercentOff")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DiscountCodes");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.PaymentInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("BalanceDue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoutingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalCreditAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalTaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("PaymentInfos");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.PriorYearSoldSuspendedVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuyerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateSold")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MileageLimit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("PriorYearSoldSuspendedVehicles");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.ServiceFeePayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BillingAddressLine1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillingAddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillingCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillingState")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillingZip")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CardBrand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DiscountCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExpMonth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Last4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("OtherCharges")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ServiceFeeAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripeCustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripePaymentMethodId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalCharged")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("ServiceFeePayments");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.SuspendedVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MileageLimit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("SuspendedVehicles");
+                });
+
             modelBuilder.Entity("TruckTaxPro.Domain.TaxPeriod", b =>
                 {
                     b.Property<int>("Id")
@@ -407,6 +724,44 @@ namespace TruckTaxPro.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaxPeriods");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.TaxableVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BusinessTaxPeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsLogging")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("UnitNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeightCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessTaxPeriodId");
+
+                    b.ToTable("TaxableVehicles");
                 });
 
             modelBuilder.Entity("TruckTaxPro.Domain.Vehicle", b =>
@@ -504,6 +859,72 @@ namespace TruckTaxPro.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Business");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.CreditVehicle", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.PaymentInfo", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.PriorYearSoldSuspendedVehicle", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.ServiceFeePayment", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.SuspendedVehicle", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
+                });
+
+            modelBuilder.Entity("TruckTaxPro.Domain.TaxableVehicle", b =>
+                {
+                    b.HasOne("TruckTaxPro.Domain.BusinessTaxPeriod", "BusinessTaxPeriod")
+                        .WithMany()
+                        .HasForeignKey("BusinessTaxPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinessTaxPeriod");
                 });
 
             modelBuilder.Entity("TruckTaxPro.Domain.Vehicle", b =>

@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using TruckTaxPro.Data
 @inject UserManager<ApplicationUser> UserManager
+@inject TruckTaxProDbContext Db
 @{
     var currentUser = await UserManager.GetUserAsync(User);
     var displayName = currentUser?.FullName;
@@ -15,6 +16,12 @@
         displayName = Model.ActiveBusinessName;
     }
     else
+    {
+        var fallbackBusiness = Db.Businesses.FirstOrDefault(b => b.UserId == currentUser!.Id);
+        displayName = fallbackBusiness?.BusinessName;
+    }
+
+    if (string.IsNullOrWhiteSpace(displayName))
     {
         displayName = "there";
     }

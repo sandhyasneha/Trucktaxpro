@@ -1,0 +1,634 @@
+﻿@model Trucktaxpro.Models.IrsPaymentViewModel
+@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = 4,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IRS Payment — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+        body {
+            background: var(--cream);
+        }
+
+        .app-bar {
+            background: var(--ink);
+            color: var(--cream);
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .app-bar .logo {
+                font-family: 'Oswald',sans-serif;
+                font-weight: 700;
+                font-size: 20px;
+            }
+
+                .app-bar .logo span {
+                    color: var(--amber);
+                }
+
+            .app-bar a.exit {
+                color: #C7D2DB;
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            .app-bar .user-block {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+                .app-bar .user-block .welcome {
+                    color: var(--cream);
+                    font-size: 13px;
+                    font-weight: 600;
+                }
+
+                .app-bar .user-block button.signout {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    color: #C7D2DB;
+                    font-size: 12px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    cursor: pointer;
+                }
+
+        .step-tracker {
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+            padding: 20px 40px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--steel);
+            white-space: nowrap;
+        }
+
+            .step-pill .num {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: var(--line);
+                color: var(--steel);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-family: 'IBM Plex Mono',monospace;
+                flex-shrink: 0;
+            }
+
+            .step-pill.active {
+                background: rgba(242,169,59,0.12);
+                color: var(--ink);
+            }
+
+                .step-pill.active .num {
+                    background: var(--ink);
+                    color: var(--amber);
+                }
+
+        .step-arrow {
+            color: var(--line);
+            padding: 0 4px;
+            align-self: center;
+        }
+
+
+        .form-wrap {
+            max-width: 820px;
+            margin: 40px auto 80px;
+            padding: 0 24px;
+        }
+
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            color: var(--steel);
+            font-size: 14.5px;
+            margin-bottom: 24px;
+        }
+
+            .page-subtitle strong {
+                color: var(--ink);
+            }
+
+        .balance-strip {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .balance-box {
+            flex: 1;
+            min-width: 160px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px 18px;
+        }
+
+            .balance-box .label {
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--steel);
+                margin-bottom: 4px;
+            }
+
+            .balance-box .value {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--ink);
+            }
+
+            .balance-box.due .value {
+                color: #B4232C;
+            }
+
+        .option-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+            .option-card.selected {
+                border-color: var(--amber);
+                box-shadow: 0 0 0 1px var(--amber);
+            }
+
+        .option-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+            .option-head input[type="radio"] {
+                margin-top: 3px;
+                width: 17px;
+                height: 17px;
+                accent-color: var(--amber);
+                flex-shrink: 0;
+            }
+
+        .option-title {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+        .option-desc {
+            color: var(--steel);
+            font-size: 13.5px;
+            margin-top: 4px;
+            line-height: 1.55;
+        }
+
+            .option-desc a {
+                color: #1A3A56;
+                font-weight: 600;
+            }
+
+        .efw-fields {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 20px;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--line);
+        }
+
+            .efw-fields.show {
+                display: grid;
+            }
+
+            .efw-fields .field-group {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+                .efw-fields .field-group.full {
+                    grid-column: 1 / -1;
+                }
+
+                .efw-fields label {
+                    font-size: 12.5px;
+                    font-weight: 600;
+                    color: var(--ink);
+                }
+
+                .efw-fields select,
+                .efw-fields input[type="text"] {
+                    padding: 10px 12px;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    font-size: 14px;
+                    font-family: 'IBM Plex Sans', sans-serif;
+                }
+
+                .efw-fields .radio-row {
+                    display: flex;
+                    gap: 20px;
+                    align-items: center;
+                    padding-top: 4px;
+                }
+
+                    .efw-fields .radio-row label {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-weight: 500;
+                    }
+
+        .field-error {
+            color: #B4232C;
+            font-size: 12.5px;
+            margin-top: 2px;
+        }
+
+        .help-icon {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--line);
+            color: var(--steel);
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            font-weight: 700;
+            position: relative;
+            margin-left: 4px;
+        }
+
+            .help-icon .tip {
+                display: none;
+                position: absolute;
+                bottom: 22px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--white);
+                border: 1px solid var(--line);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+                color: var(--ink);
+                font-size: 12px;
+                font-weight: 400;
+                padding: 14px;
+                border-radius: 8px;
+                width: 300px;
+                line-height: 1.5;
+                z-index: 10;
+            }
+
+                .help-icon .tip strong {
+                    display: block;
+                    margin-top: 8px;
+                    margin-bottom: 2px;
+                    font-size: 12px;
+                }
+
+            .help-icon:hover .tip {
+                display: block;
+            }
+
+        .routing-live-msg {
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+            .routing-live-msg.ok {
+                color: #1E7E34;
+                display: block;
+            }
+
+            .routing-live-msg.bad {
+                color: #B4232C;
+                display: block;
+            }
+
+        .convenience-note {
+            margin-top: 10px;
+            font-size: 12.5px;
+            color: var(--steel);
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--cream);
+        }
+
+            .btn-primary:hover {
+                background: #1A3A56;
+            }
+    </style>
+</head>
+<body>
+    <partial name="_WizardChrome" model="chromeModel" />
+    <div class="form-wrap">
+        <div class="page-title">IRS Payment</div>
+        <div class="page-subtitle">
+            Select the payment method to pay total tax <strong>$@Model.BalanceDue.ToString("N2")</strong> to the IRS.
+        </div>
+
+        <div class="balance-strip">
+            <div class="balance-box">
+                <div class="label">Total Tax</div>
+                <div class="value">$@Model.TotalTaxAmount.ToString("N2")</div>
+            </div>
+            <div class="balance-box">
+                <div class="label">Total Credit</div>
+                <div class="value">$@Model.TotalCreditAmount.ToString("N2")</div>
+            </div>
+            <div class="balance-box due">
+                <div class="label">Balance Due</div>
+                <div class="value">$@Model.BalanceDue.ToString("N2")</div>
+            </div>
+        </div>
+
+        <form asp-action="SubmitPayment" method="post" id="paymentForm">
+            <input type="hidden" name="BusinessTaxPeriodId" value="@Model.BusinessTaxPeriodId" />
+            @Html.AntiForgeryToken()
+
+            <div class="option-card" id="card-EFW">
+                <label class="option-head">
+                    <input type="radio" name="PaymentMethod" value="EFW" class="method-radio"
+                           checked="@(Model.Payment.PaymentMethod == "EFW" || string.IsNullOrEmpty(Model.Payment.PaymentMethod))" />
+                    <span>
+                        <div class="option-title">Option 1: Electronic Fund Withdrawal / E-Check</div>
+                        <div class="option-desc">The IRS debits your bank account directly for the amount owed. Enter your account details below.</div>
+                    </span>
+                </label>
+
+                <div class="efw-fields" id="efw-fields">
+                    <div class="field-group">
+                        <label>Account Type*</label>
+                        <div class="radio-row">
+                            <label><input type="radio" name="AccountType" value="Checking"
+                                          checked="@(Model.Payment.AccountType == "Checking")" /> Checking</label>
+                            <label><input type="radio" name="AccountType" value="Saving"
+                                          checked="@(Model.Payment.AccountType == "Saving")" /> Saving</label>
+                        </div>
+                        @if (ViewData.ModelState["AccountType"]?.Errors.Count > 0)
+                        {
+                            <span class="field-error">@ViewData.ModelState["AccountType"]!.Errors.First().ErrorMessage</span>
+                        }
+                    </div>
+                    <div class="field-group"></div>
+
+                    <div class="field-group">
+                        <label>
+                            Account Number*
+                            <span class="help-icon">?<span class="tip">
+                                <svg viewBox="0 0 280 90" width="100%" style="display:block;margin-bottom:8px;">
+                                    <rect x="1" y="1" width="278" height="88" rx="6" fill="var(--cream)" stroke="var(--line)"/>
+                                    <line x1="16" y1="24" x2="130" y2="24" stroke="var(--line)"/>
+                                    <line x1="16" y1="36" x2="90" y2="36" stroke="var(--line)"/>
+                                    <rect x="180" y="14" width="84" height="16" rx="2" fill="none" stroke="var(--steel)"/>
+                                    <text x="222" y="26" text-anchor="middle" font-size="9" fill="var(--steel)">$ ______</text>
+                                    <line x1="180" y1="46" x2="264" y2="46" stroke="var(--line)"/>
+                                    <rect x="14" y="60" width="118" height="18" rx="2" fill="rgba(242,169,59,0.18)" stroke="var(--amber)"/>
+                                    <text x="73" y="72" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">123456789</text>
+                                    <rect x="138" y="60" width="130" height="18" rx="2" fill="rgba(30,126,52,0.12)" stroke="#1E7E34"/>
+                                    <text x="203" y="72" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">00987654321</text>
+                                </svg>
+                                <strong style="color:var(--amber);">Routing Number</strong>
+                                9 digits, bottom-left of your check.
+                                <strong style="color:#1E7E34;">Account Number</strong>
+                                Next to it, usually 5-17 digits — do not include the check number on the far right.
+                            </span></span>
+                        </label>
+                        <input type="text" name="AccountNumber" value="@Model.Payment.AccountNumber" placeholder="Account Number"
+                               inputmode="numeric" maxlength="17"
+                               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 17)" />
+                        @if (ViewData.ModelState["AccountNumber"]?.Errors.Count > 0)
+                        {
+                            <span class="field-error">@ViewData.ModelState["AccountNumber"]!.Errors.First().ErrorMessage</span>
+                        }
+                    </div>
+                    <div class="field-group">
+                        <label>Phone Number*</label>
+                        <input type="text" name="PhoneNumber" value="@Model.Payment.PhoneNumber" placeholder="(555) 123-4567"
+                               inputmode="numeric" maxlength="14" id="phoneNumberInput" />
+                        @if (ViewData.ModelState["PhoneNumber"]?.Errors.Count > 0)
+                        {
+                            <span class="field-error">@ViewData.ModelState["PhoneNumber"]!.Errors.First().ErrorMessage</span>
+                        }
+                    </div>
+
+                    <div class="field-group full">
+                        <label>
+                            Routing Number*
+                            <span class="help-icon">?<span class="tip">
+                                <svg viewBox="0 0 280 90" width="100%" style="display:block;margin-bottom:8px;">
+                                    <rect x="1" y="1" width="278" height="88" rx="6" fill="var(--cream)" stroke="var(--line)"/>
+                                    <line x1="16" y1="24" x2="130" y2="24" stroke="var(--line)"/>
+                                    <line x1="16" y1="36" x2="90" y2="36" stroke="var(--line)"/>
+                                    <rect x="180" y="14" width="84" height="16" rx="2" fill="none" stroke="var(--steel)"/>
+                                    <text x="222" y="26" text-anchor="middle" font-size="9" fill="var(--steel)">$ ______</text>
+                                    <line x1="180" y1="46" x2="264" y2="46" stroke="var(--line)"/>
+                                    <rect x="14" y="60" width="118" height="18" rx="2" fill="rgba(242,169,59,0.18)" stroke="var(--amber)"/>
+                                    <text x="73" y="72" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">123456789</text>
+                                    <rect x="138" y="60" width="130" height="18" rx="2" fill="rgba(30,126,52,0.12)" stroke="#1E7E34"/>
+                                    <text x="203" y="72" text-anchor="middle" font-size="9" font-weight="700" fill="var(--ink)">00987654321</text>
+                                </svg>
+                                <strong style="color:var(--amber);">Routing Number</strong>
+                                Always exactly 9 digits, found at the bottom-left of a check — it identifies your bank.
+                            </span></span>
+                        </label>
+                        <input type="text" name="RoutingNumber" value="@Model.Payment.RoutingNumber" placeholder="Routing Number" id="routingNumberInput"
+                               inputmode="numeric" maxlength="9"
+                               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 9)" />
+                        @if (ViewData.ModelState["RoutingNumber"]?.Errors.Count > 0)
+                        {
+                            <span class="field-error">@ViewData.ModelState["RoutingNumber"]!.Errors.First().ErrorMessage</span>
+                        }
+                        <span class="routing-live-msg" id="routingLiveMsg"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option-card" id="card-EFTPS">
+                <label class="option-head">
+                    <input type="radio" name="PaymentMethod" value="EFTPS" class="method-radio"
+                           checked="@(Model.Payment.PaymentMethod == "EFTPS")" />
+                    <span>
+                        <div class="option-title">Option 2: EFTPS (Electronic Federal Tax Payment System)</div>
+                        <div class="option-desc">
+                            EFTPS is a tax payment system provided free by the U.S. Department of Treasury. You can use EFTPS via the Internet or Phone 24/7.
+                            You have the responsibility to make the tax payment separately at
+                            <a href="https://www.eftps.gov" target="_blank" rel="noopener">eftps.gov</a>.
+                        </div>
+                    </span>
+                </label>
+            </div>
+
+            <div class="option-card" id="card-CreditCard">
+                <label class="option-head">
+                    <input type="radio" name="PaymentMethod" value="CreditCard" class="method-radio"
+                           checked="@(Model.Payment.PaymentMethod == "CreditCard")" />
+                    <span>
+                        <div class="option-title">Option 3: Credit / Debit Card</div>
+                        <div class="option-desc">
+                            The IRS accepts credit or debit cards to pay Form 2290 tax. To pay with a credit or debit card, go to
+                            <a href="https://www.irs.gov/payments/pay-taxes-by-credit-or-debit-card" target="_blank" rel="noopener">IRS.gov/PayByCard</a>.
+                        </div>
+                        <div class="convenience-note">Please note, a convenience fee is charged by these service providers.</div>
+                    </span>
+                </label>
+            </div>
+
+            @if (ViewData.ModelState["PaymentMethod"]?.Errors.Count > 0)
+            {
+                <span class="field-error">@ViewData.ModelState["PaymentMethod"]!.Errors.First().ErrorMessage</span>
+            }
+
+            <div class="action-row">
+                <a href="@ViewBag.PreviousUrl" class="btn btn-secondary">&larr; Previous Step</a>
+                <button type="submit" class="btn btn-primary">Make Payment</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const radios = document.querySelectorAll('.method-radio');
+        const efwFields = document.getElementById('efw-fields');
+        const cards = {
+            EFW: document.getElementById('card-EFW'),
+            EFTPS: document.getElementById('card-EFTPS'),
+            CreditCard: document.getElementById('card-CreditCard')
+        };
+
+        function syncSelection() {
+            const checked = document.querySelector('.method-radio:checked');
+            const value = checked ? checked.value : null;
+
+            Object.keys(cards).forEach(key => {
+                cards[key].classList.toggle('selected', key === value);
+            });
+
+            efwFields.classList.toggle('show', value === 'EFW');
+        }
+
+        radios.forEach(r => r.addEventListener('change', syncSelection));
+        syncSelection();
+
+        // Live ABA routing-number checksum check (mirrors the server-side rule) —
+        // this only catches typos; it's not a substitute for the server-side validation
+        // that runs again on submit.
+        function isValidAbaRoutingNumber(value) {
+            if (!/^\d{9}$/.test(value)) return null; // not enough digits yet — don't judge
+            const d = value.split('').map(Number);
+            const checksum = 3 * (d[0] + d[3] + d[6]) + 7 * (d[1] + d[4] + d[7]) + 1 * (d[2] + d[5] + d[8]);
+            return checksum % 10 === 0;
+        }
+
+        const routingInput = document.getElementById('routingNumberInput');
+        const routingMsg = document.getElementById('routingLiveMsg');
+
+        routingInput.addEventListener('input', () => {
+            const result = isValidAbaRoutingNumber(routingInput.value.trim());
+            if (result === null) {
+                routingMsg.className = 'routing-live-msg';
+                routingMsg.textContent = '';
+            } else if (result) {
+                routingMsg.className = 'routing-live-msg ok';
+                routingMsg.textContent = 'Looks like a valid routing number.';
+            } else {
+                routingMsg.className = 'routing-live-msg bad';
+                routingMsg.textContent = "This doesn't look like a valid routing number — check the 9 digits.";
+            }
+        });
+
+        // Phone number: format as (555) 123-4567 while typing, but the form always submits
+        // plain digits underneath — the server's validation expects exactly 10 raw digits.
+        const phoneInput = document.getElementById('phoneNumberInput');
+
+        function formatPhoneDisplay(digits) {
+            digits = digits.slice(0, 10);
+            if (digits.length <= 3) return digits;
+            if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+        }
+
+        phoneInput.addEventListener('input', () => {
+            const digitsOnly = phoneInput.value.replace(/\D/g, '');
+            phoneInput.value = formatPhoneDisplay(digitsOnly);
+        });
+
+        // Format whatever pre-filled value came from the server (e.g. returning to this page).
+        phoneInput.value = formatPhoneDisplay(phoneInput.value.replace(/\D/g, ''));
+
+        document.getElementById('paymentForm').addEventListener('submit', () => {
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        });
+    </script>
+</body>
+</html>

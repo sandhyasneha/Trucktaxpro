@@ -1,0 +1,181 @@
+﻿@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = (int)ViewBag.CurrentStep,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coming Soon — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            body {
+                background: var(--cream);
+            }
+
+            .app-bar {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 18px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .app-bar .logo {
+                    font-family: 'Oswald',sans-serif;
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+
+                    .app-bar .logo span {
+                        color: var(--amber);
+                    }
+
+                .app-bar a.exit {
+                    color: #C7D2DB;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .app-bar .user-block {
+                    display: flex;
+                    align-items: center;
+                    gap: 18px;
+                }
+
+                    .app-bar .user-block .welcome {
+                        color: var(--cream);
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    .app-bar .user-block button.signout {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        color: #C7D2DB;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                        cursor: pointer;
+                    }
+
+            .step-tracker {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 20px 40px;
+                display: flex;
+                gap: 0;
+                overflow-x: auto;
+            }
+
+            .step-pill {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 18px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                white-space: nowrap;
+            }
+
+                .step-pill .num {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--line);
+                    color: var(--steel);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    flex-shrink: 0;
+                }
+
+                .step-pill.active {
+                    background: rgba(242,169,59,0.12);
+                    color: var(--ink);
+                }
+
+                    .step-pill.active .num {
+                        background: var(--ink);
+                        color: var(--amber);
+                    }
+
+            .step-arrow {
+                color: var(--line);
+                padding: 0 4px;
+                align-self: center;
+            }
+
+            .form-wrap {
+                max-width: 640px;
+                margin: 60px auto;
+                padding: 0 24px;
+                text-align: center;
+            }
+
+            .form-card {
+                background: var(--white);
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                padding: 50px 32px;
+            }
+
+                .form-card h1 {
+                    font-size: 22px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 10px;
+                }
+
+                .form-card p {
+                    color: var(--steel);
+                    font-size: 14.5px;
+                    line-height: 1.6;
+                }
+
+            .prev-link {
+                margin-top: 24px;
+                display: inline-block;
+                padding: 12px 26px;
+                background: var(--ink);
+                color: var(--cream);
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 13.5px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                text-decoration: none;
+            }
+
+                .prev-link:hover {
+                    background: #1A3A56;
+                }
+    </style>
+</head>
+<body>
+    <partial name="_WizardChrome" model="chromeModel" />
+    <div class="form-wrap">
+        <div class="form-card">
+            <h1>@ViewBag.StepTitle</h1>
+            <p>@ViewBag.StepMessage</p>
+            <a href="@ViewBag.BackUrl" class="prev-link">&larr; Back</a>
+        </div>
+    </div>
+</body>
+</html>

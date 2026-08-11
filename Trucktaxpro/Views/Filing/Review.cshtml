@@ -1,0 +1,676 @@
+﻿@model Trucktaxpro.Models.ReviewViewModel
+@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = 5,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review & Submit — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            background: var(--cream);
+        }
+
+        .app-bar {
+            background: var(--ink);
+            color: var(--cream);
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .app-bar .logo {
+                font-family: 'Oswald',sans-serif;
+                font-weight: 700;
+                font-size: 20px;
+            }
+
+                .app-bar .logo span {
+                    color: var(--amber);
+                }
+
+            .app-bar a.exit {
+                color: #C7D2DB;
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            .app-bar .user-block {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+                .app-bar .user-block .welcome {
+                    color: var(--cream);
+                    font-size: 13px;
+                    font-weight: 600;
+                }
+
+                .app-bar .user-block button.signout {
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    color: #C7D2DB;
+                    font-size: 12px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    cursor: pointer;
+                }
+
+        .step-tracker {
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+            padding: 20px 40px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--steel);
+            white-space: nowrap;
+        }
+
+            .step-pill .num {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: var(--line);
+                color: var(--steel);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-family: 'IBM Plex Mono',monospace;
+                flex-shrink: 0;
+            }
+
+            .step-pill.active {
+                background: rgba(242,169,59,0.12);
+                color: var(--ink);
+            }
+
+                .step-pill.active .num {
+                    background: var(--ink);
+                    color: var(--amber);
+                }
+
+        .step-arrow {
+            color: var(--line);
+            padding: 0 4px;
+            align-self: center;
+        }
+
+
+        .form-wrap {
+            max-width: 900px;
+            margin: 40px auto 80px;
+            padding: 0 24px;
+        }
+
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 18px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 18px 22px;
+        }
+
+            .summary-card.full {
+                grid-column: 1 / -1;
+            }
+
+            .summary-card h3 {
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--steel);
+                margin: 0 0 12px;
+            }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--ink);
+            border-bottom: 1px solid var(--line);
+        }
+
+            .summary-row:last-child {
+                border-bottom: none;
+            }
+
+            .summary-row .k {
+                color: var(--steel);
+            }
+
+            .summary-row .v {
+                font-weight: 600;
+            }
+
+        .vehicle-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .vehicle-chip {
+            background: rgba(242,169,59,0.12);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+            .vehicle-chip .count {
+                color: #1A3A56;
+                margin-right: 4px;
+            }
+
+        .fee-card {
+            background: var(--white);
+            border: 1px solid var(--amber);
+            border-radius: 8px;
+            padding: 28px 30px;
+        }
+
+        .fee-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+            .fee-card-header img {
+                height: 20px;
+            }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 32px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+            .field-group label {
+                font-size: 12.5px;
+                font-weight: 600;
+                color: var(--ink);
+            }
+
+            .field-group input[type="text"],
+            .field-group select {
+                padding: 10px 12px;
+                border: 1px solid var(--line);
+                border-radius: 4px;
+                font-size: 14px;
+                font-family: 'IBM Plex Sans', sans-serif;
+            }
+
+        .stripe-element-box {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: var(--white);
+        }
+
+        .name-row, .expiry-cvv-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .discount-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+            .discount-row .field-group {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            .discount-row button {
+                height: 40px;
+                padding: 0 18px;
+                border-radius: 4px;
+                border: none;
+                background: var(--ink);
+                color: var(--cream);
+                font-weight: 600;
+                font-size: 13px;
+                cursor: pointer;
+            }
+
+        .discount-message {
+            font-size: 12.5px;
+            margin-top: 6px;
+        }
+
+            .discount-message.ok { color: #1E7E34; }
+            .discount-message.error { color: #B4232C; }
+
+        .summary-box {
+            margin-top: 6px;
+        }
+
+            .summary-line {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                font-size: 14px;
+                color: var(--steel);
+                border-bottom: 1px solid var(--line);
+            }
+
+                .summary-line.total {
+                    font-weight: 700;
+                    color: var(--ink);
+                    font-size: 16px;
+                    border-bottom: none;
+                    padding-top: 12px;
+                }
+
+        .field-error {
+            color: #B4232C;
+            font-size: 12.5px;
+            margin-top: 2px;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 26px;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--cream);
+        }
+
+            .btn-primary:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+        .server-error {
+            color: #B4232C;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <partial name="_WizardChrome" model="chromeModel" />
+    <div class="form-wrap">
+        <div class="page-title">Review & Submit</div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Business</h3>
+                <div class="summary-row"><span class="k">Name</span><span class="v">@Model.BusinessName</span></div>
+                <div class="summary-row"><span class="k">EIN</span><span class="v">@Model.Ein</span></div>
+                <div class="summary-row"><span class="k">Address</span><span class="v">@Model.AddressLine1, @Model.City, @Model.State @Model.ZipCode</span></div>
+                <div class="summary-row"><span class="k">Tax Period</span><span class="v">Jul @Model.TaxYearStart – Jun @Model.TaxYearEnd</span></div>
+                <div class="summary-row"><span class="k">First Used Month</span><span class="v">@Model.FirstUsedMonth.ToString("MMMM yyyy")</span></div>
+            </div>
+
+            <div class="summary-card">
+                <h3>Vehicles Filed</h3>
+                <div class="vehicle-chip-row">
+                    @if (Model.TaxableCount > 0)
+                    {
+                        <div class="vehicle-chip"><span class="count">@Model.TaxableCount</span>Taxable</div>
+                    }
+                    @if (Model.SuspendedCount > 0)
+                    {
+                        <div class="vehicle-chip"><span class="count">@Model.SuspendedCount</span>Suspended</div>
+                    }
+                    @if (Model.CreditCount > 0)
+                    {
+                        <div class="vehicle-chip"><span class="count">@Model.CreditCount</span>Credit</div>
+                    }
+                    @if (Model.PriorYearSoldSuspendedCount > 0)
+                    {
+                        <div class="vehicle-chip"><span class="count">@Model.PriorYearSoldSuspendedCount</span>Prior Year Sold Suspended</div>
+                    }
+                </div>
+            </div>
+
+            <div class="summary-card full">
+                <h3>IRS Payment</h3>
+                <div class="summary-row"><span class="k">Method</span><span class="v">@Model.IrsPaymentMethod</span></div>
+                <div class="summary-row"><span class="k">Total Tax</span><span class="v">$@Model.TotalTaxAmount.ToString("N2")</span></div>
+                <div class="summary-row"><span class="k">Total Credit</span><span class="v">$@Model.TotalCreditAmount.ToString("N2")</span></div>
+                <div class="summary-row"><span class="k">Balance Due to IRS</span><span class="v">$@Model.BalanceDue.ToString("N2")</span></div>
+            </div>
+        </div>
+
+        <div class="fee-card">
+            <div class="fee-card-header">Enter your Payment Details</div>
+
+            <div class="grid-2">
+                <div>
+                    <div class="name-row">
+                        <div class="field-group">
+                            <label>Card Holder's First Name</label>
+                            <input type="text" id="firstName" value="@Model.DefaultFirstName" placeholder="First Name" />
+                        </div>
+                        <div class="field-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName" placeholder="Last Name" />
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Card Number</label>
+                        <div class="stripe-element-box" id="card-number-element"></div>
+                    </div>
+
+                    <div class="expiry-cvv-row">
+                        <div class="field-group">
+                            <label>Expiry Date</label>
+                            <div class="stripe-element-box" id="card-expiry-element"></div>
+                        </div>
+                        <div class="field-group">
+                            <label>CVV</label>
+                            <div class="stripe-element-box" id="card-cvc-element"></div>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Address 1</label>
+                        <input type="text" id="addressLine1" value="@Model.DefaultAddressLine1" placeholder="Address Line 1" />
+                    </div>
+                    <div class="field-group">
+                        <label>Address 2</label>
+                        <input type="text" id="addressLine2" placeholder="Address Line 2 (optional)" />
+                    </div>
+
+                    <div class="name-row">
+                        <div class="field-group">
+                            <label>City</label>
+                            <input type="text" id="city" value="@Model.DefaultCity" placeholder="City" />
+                        </div>
+                        <div class="field-group">
+                            <label>State</label>
+                            <input type="text" id="state" value="@Model.DefaultState" placeholder="State" />
+                        </div>
+                    </div>
+
+                    <div class="name-row">
+                        <div class="field-group">
+                            <label>Zip</label>
+                            <input type="text" id="zip" value="@Model.DefaultZip" placeholder="Zip" />
+                        </div>
+                        <div class="field-group">
+                            <label>Contact Phone</label>
+                            <input type="text" id="phone" value="@Model.DefaultPhone" placeholder="Phone Number" />
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Contact Email</label>
+                        <input type="text" id="email" placeholder="Email Address" />
+                    </div>
+                </div>
+
+                <div>
+                    <div class="discount-row">
+                        <div class="field-group">
+                            <label>Discount Code</label>
+                            <input type="text" id="discountCode" placeholder="Discount Code" />
+                        </div>
+                        <button type="button" id="applyDiscountBtn">Apply</button>
+                    </div>
+                    <div class="discount-message" id="discountMessage"></div>
+
+                    <div class="summary-box">
+                        <div class="summary-line">
+                            <span>E-file Service Fee</span>
+                            <span id="feeAmountDisplay">$@Model.ServiceFeeAmount.ToString("N2")</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Other Charges</span>
+                            <span>$@Model.OtherCharges.ToString("N2")</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Discount</span>
+                            <span id="discountAmountDisplay">-$0.00</span>
+                        </div>
+                        <div class="summary-line total">
+                            <span>Your card will be charged</span>
+                            <span id="totalDisplay">$@Model.ServiceFeeAmount.ToString("N2")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="server-error" id="serverError"></div>
+
+            <div class="action-row">
+                <a href="@ViewBag.PreviousUrl" class="btn btn-secondary">&larr; Previous Step</a>
+                <button type="button" class="btn btn-primary" id="payBtn">Pay & Submit Filing</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const businessTaxPeriodId = @Model.BusinessTaxPeriodId;
+        const feeAmount = @Model.ServiceFeeAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+        const stripe = Stripe('@Model.StripePublishableKey');
+        const elements = stripe.elements();
+
+        const elementStyle = {
+            base: {
+                fontSize: '14px',
+                fontFamily: '"IBM Plex Sans", sans-serif',
+                color: '#1A1A1A',
+                '::placeholder': { color: '#9AA5B1' }
+            }
+        };
+
+        const cardNumber = elements.create('cardNumber', { style: elementStyle });
+        const cardExpiry = elements.create('cardExpiry', { style: elementStyle });
+        const cardCvc = elements.create('cardCvc', { style: elementStyle });
+
+        cardNumber.mount('#card-number-element');
+        cardExpiry.mount('#card-expiry-element');
+        cardCvc.mount('#card-cvc-element');
+
+        let appliedDiscountCode = null;
+        let currentTotal = feeAmount;
+
+        function money(n) {
+            return '$' + Number(n).toFixed(2);
+        }
+
+        document.getElementById('applyDiscountBtn').addEventListener('click', async () => {
+            const code = document.getElementById('discountCode').value.trim();
+            const msg = document.getElementById('discountMessage');
+            msg.textContent = '';
+            msg.className = 'discount-message';
+
+            if (!code) return;
+
+            const res = await fetch('@Url.Action("ApplyDiscountCode")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': antiForgeryToken },
+                body: JSON.stringify({ businessTaxPeriodId, code })
+            });
+            const data = await res.json();
+
+            if (!data.success) {
+                msg.textContent = data.message;
+                msg.classList.add('error');
+                appliedDiscountCode = null;
+                document.getElementById('discountAmountDisplay').textContent = '-$0.00';
+                currentTotal = feeAmount;
+                document.getElementById('totalDisplay').textContent = money(currentTotal);
+                return;
+            }
+
+            appliedDiscountCode = code;
+            currentTotal = data.total;
+            msg.textContent = 'Discount applied!';
+            msg.classList.add('ok');
+            document.getElementById('discountAmountDisplay').textContent = '-' + money(data.discountAmount);
+            document.getElementById('totalDisplay').textContent = money(currentTotal);
+        });
+
+        document.getElementById('payBtn').addEventListener('click', async () => {
+            const errorBox = document.getElementById('serverError');
+            errorBox.style.display = 'none';
+            const payBtn = document.getElementById('payBtn');
+            payBtn.disabled = true;
+            payBtn.textContent = 'Processing…';
+
+            try {
+                const intentRes = await fetch('@Url.Action("CreateServiceFeeIntent")', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': antiForgeryToken },
+                    body: JSON.stringify({ businessTaxPeriodId, discountCode: appliedDiscountCode })
+                });
+                const intentData = await intentRes.json();
+
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const addressLine1 = document.getElementById('addressLine1').value.trim();
+                const addressLine2 = document.getElementById('addressLine2').value.trim();
+                const city = document.getElementById('city').value.trim();
+                const state = document.getElementById('state').value.trim();
+                const zip = document.getElementById('zip').value.trim();
+
+                const result = await stripe.confirmCardPayment(intentData.clientSecret, {
+                    payment_method: {
+                        card: cardNumber,
+                        billing_details: {
+                            name: `${firstName} ${lastName}`.trim(),
+                            email: email,
+                            phone: phone,
+                            address: {
+                                line1: addressLine1,
+                                line2: addressLine2,
+                                city: city,
+                                state: state,
+                                postal_code: zip,
+                                country: 'US'
+                            }
+                        }
+                    }
+                });
+
+                if (result.error) {
+                    errorBox.textContent = result.error.message;
+                    errorBox.style.display = 'block';
+                    payBtn.disabled = false;
+                    payBtn.textContent = 'Pay & Submit Filing';
+                    return;
+                }
+
+                const confirmRes = await fetch('@Url.Action("ConfirmServiceFee")', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': antiForgeryToken },
+                    body: JSON.stringify({
+                        businessTaxPeriodId,
+                        paymentIntentId: result.paymentIntent.id,
+                        discountCode: appliedDiscountCode,
+                        firstName, lastName, email, phone,
+                        addressLine1, addressLine2, city, state, zip
+                    })
+                });
+                const confirmData = await confirmRes.json();
+
+                if (!confirmData.success) {
+                    errorBox.textContent = confirmData.message || 'Payment could not be confirmed.';
+                    errorBox.style.display = 'block';
+                    payBtn.disabled = false;
+                    payBtn.textContent = 'Pay & Submit Filing';
+                    return;
+                }
+
+                window.location.href = confirmData.redirectUrl;
+            } catch (err) {
+                errorBox.textContent = 'Something went wrong. Please try again.';
+                errorBox.style.display = 'block';
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay & Submit Filing';
+            }
+        });
+    </script>
+    @Html.AntiForgeryToken()
+</body>
+</html>

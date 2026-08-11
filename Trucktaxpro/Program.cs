@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TruckTaxPro.Data;
 using Trucktaxpro.Services;
+using Trucktaxpro.Options;
+using TruckTaxPro.Application.Mef;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +47,14 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
 });
 
+// IRS Payment / Stripe Service Fee / MeF handoff — pricing config + placeholder MeF transmitter.
+builder.Services.Configure<PricingOptions>(builder.Configuration.GetSection("Pricing"));
+builder.Services.AddScoped<IMefTransmissionService, PlaceholderMefTransmissionService>();
+
 var app = builder.Build();
+
+// Stripe API key init.
+Stripe.StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -85,18 +94,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "admin/{action=Login}",
-    defaults: new { controller = "Admin" });
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapControllers();
-
-app.Run();
 
 app.MapControllerRoute(
     name: "admin",

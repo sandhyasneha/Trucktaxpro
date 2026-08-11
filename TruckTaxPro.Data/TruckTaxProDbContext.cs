@@ -15,5 +15,12 @@ public class TruckTaxProDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<TaxPeriod> TaxPeriods => Set<TaxPeriod>();
     public DbSet<BusinessTaxPeriod> BusinessTaxPeriods => Set<BusinessTaxPeriod>();
+    public DbSet<TaxableVehicle> TaxableVehicles => Set<TaxableVehicle>();
+    public DbSet<SuspendedVehicle> SuspendedVehicles => Set<SuspendedVehicle>();
+    public DbSet<CreditVehicle> CreditVehicles => Set<CreditVehicle>();
+    public DbSet<PriorYearSoldSuspendedVehicle> PriorYearSoldSuspendedVehicles => Set<PriorYearSoldSuspendedVehicle>();
+    public DbSet<PaymentInfo> PaymentInfos => Set<PaymentInfo>();
+    public DbSet<ServiceFeePayment> ServiceFeePayments => Set<ServiceFeePayment>();
+    public DbSet<DiscountCode> DiscountCodes => Set<DiscountCode>();
     public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
 }

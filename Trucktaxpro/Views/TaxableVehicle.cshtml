@@ -1,0 +1,478 @@
+﻿@model Trucktaxpro.Models.TaxableVehicleListViewModel
+@{
+    Layout = null;
+    var chromeModel = new Trucktaxpro.Models.WizardChromeViewModel
+    {
+        Steps = new List<string> { "Business", "Tax Period", "Vehicles", "IRS Payment", "Review", "Finish" },
+        CurrentStep = 3,
+        ActiveBusinessName = ViewBag.BusinessName
+    };
+    var categories = (IReadOnlyList<TruckTaxPro.Domain.IrsWeightCategoryRates.CategoryRate>)ViewBag.WeightCategories;
+    var newVehicle = Model.NewVehicle;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Taxable Vehicles — TruckTaxPro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@@400;500;600;700&family=IBM+Plex+Sans:wght@@400;500;600&family=IBM+Plex+Mono:wght@@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+            body {
+                background: var(--cream);
+            }
+
+            .app-bar {
+                background: var(--ink);
+                color: var(--cream);
+                padding: 18px 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .app-bar .logo {
+                    font-family: 'Oswald',sans-serif;
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+
+                    .app-bar .logo span {
+                        color: var(--amber);
+                    }
+
+                .app-bar a.exit {
+                    color: #C7D2DB;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .app-bar .user-block {
+                    display: flex;
+                    align-items: center;
+                    gap: 18px;
+                }
+
+                    .app-bar .user-block .welcome {
+                        color: var(--cream);
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    .app-bar .user-block button.signout {
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        color: #C7D2DB;
+                        font-size: 12px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                        cursor: pointer;
+                    }
+
+            .step-tracker {
+                background: var(--white);
+                border-bottom: 1px solid var(--line);
+                padding: 20px 40px;
+                display: flex;
+                gap: 0;
+                overflow-x: auto;
+            }
+
+            .step-pill {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 18px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--steel);
+                white-space: nowrap;
+            }
+
+                .step-pill .num {
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    background: var(--line);
+                    color: var(--steel);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    font-family: 'IBM Plex Mono',monospace;
+                    flex-shrink: 0;
+                }
+
+                .step-pill.active {
+                    background: rgba(242,169,59,0.12);
+                    color: var(--ink);
+                }
+
+                    .step-pill.active .num {
+                        background: var(--ink);
+                        color: var(--amber);
+                    }
+
+            .step-arrow {
+                color: var(--line);
+                padding: 0 4px;
+                align-self: center;
+            }
+
+            .form-wrap {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 28px 24px 60px;
+            }
+
+            .form-card {
+                background: var(--white);
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                padding: 28px 32px;
+            }
+
+                .form-card h1 {
+                    font-size: 22px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    text-transform: none;
+                    letter-spacing: 0;
+                    margin-bottom: 4px;
+                }
+
+                .form-card .sub {
+                    color: var(--steel);
+                    font-size: 14px;
+                    margin-bottom: 18px;
+                }
+
+            .field-error {
+                color: #B23A2E;
+                font-size: 12px;
+                margin-top: 5px;
+                display: block;
+            }
+
+            .validation-summary {
+                color: #B23A2E;
+                font-size: 13.5px;
+                margin-bottom: 14px;
+                background: #FBEAE7;
+                border: 1px solid #E8B7AF;
+                border-radius: 5px;
+                padding: 10px 14px;
+            }
+
+                .validation-summary ul {
+                    margin: 0;
+                    padding-left: 18px;
+                }
+
+            table.vehicle-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 6px;
+            }
+
+                table.vehicle-table th {
+                    text-align: left;
+                    font-size: 11.5px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                    color: var(--steel);
+                    padding: 8px 10px;
+                    border-bottom: 2px solid var(--line);
+                }
+
+                table.vehicle-table td {
+                    padding: 10px;
+                    font-size: 14px;
+                    color: var(--ink);
+                    border-bottom: 1px solid var(--line);
+                }
+
+                table.vehicle-table tr.empty-row td {
+                    color: var(--steel);
+                    font-style: italic;
+                    text-align: center;
+                    padding: 20px 10px;
+                }
+
+                table.vehicle-table .icon-btn {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    padding: 4px;
+                    color: var(--steel);
+                }
+
+                    table.vehicle-table .icon-btn:hover {
+                        color: #B23A2E;
+                    }
+
+            .total-row td {
+                font-weight: 700;
+                background: rgba(242,169,59,0.08);
+            }
+
+            .add-form {
+                border: 1px solid var(--line);
+                border-radius: 6px;
+                padding: 16px;
+                margin: 16px 0 20px;
+                background: var(--cream);
+            }
+
+                .add-form .add-form-grid {
+                    display: grid;
+                    grid-template-columns: 2fr 1.5fr auto auto;
+                    gap: 14px;
+                    align-items: end;
+                }
+
+                .add-form label {
+                    display: block;
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: var(--ink);
+                    margin-bottom: 6px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.03em;
+                }
+
+                .add-form input[type="text"], .add-form select {
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 1px solid var(--line);
+                    border-radius: 4px;
+                    font-size: 14px;
+                    font-family: 'IBM Plex Sans',sans-serif;
+                    color: var(--ink);
+                    background: var(--white);
+                }
+
+                .add-form .logging-check {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    white-space: nowrap;
+                    padding-bottom: 10px;
+                }
+
+                    .add-form .logging-check input {
+                        width: 16px;
+                        height: 16px;
+                        accent-color: var(--amber);
+                        cursor: pointer;
+                    }
+
+            .add-btn {
+                padding: 10px 22px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+                .add-btn:hover {
+                    background: #1A3A56;
+                }
+
+            .submit-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            .submit-btn {
+                padding: 12px 30px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 13.5px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+            }
+
+                .submit-btn:hover {
+                    background: #1A3A56;
+                }
+
+            .prev-link {
+                padding: 12px 26px;
+                background: var(--ink);
+                color: var(--cream);
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 13.5px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+                .prev-link:hover {
+                    background: #1A3A56;
+                }
+
+            .help-icon {
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                background: var(--line);
+                color: var(--steel);
+                font-size: 10px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                cursor: help;
+                font-weight: 700;
+                position: relative;
+                margin-left: 4px;
+            }
+
+                .help-icon .tip {
+                    display: none;
+                    position: absolute;
+                    bottom: 22px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--ink);
+                    color: var(--cream);
+                    font-size: 11.5px;
+                    font-weight: 400;
+                    padding: 8px 12px;
+                    border-radius: 5px;
+                    width: 220px;
+                    line-height: 1.4;
+                    z-index: 5;
+                }
+
+                .help-icon:hover .tip {
+                    display: block;
+                }
+    </style>
+</head>
+<body>
+
+    <partial name="_WizardChrome" model="chromeModel" />
+
+    <div class="form-wrap">
+        <div class="form-card">
+            <h1>Taxable Vehicles</h1>
+            <p class="sub">Add each vehicle's VIN and weight category. Tax is calculated automatically from the IRS rate table.</p>
+
+            @if (TempData["TaxableVehicleError"] != null)
+            {
+                <div class="validation-summary">@TempData["TaxableVehicleError"]</div>
+            }
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <table class="vehicle-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>VIN</th>
+                        <th>Gross Weight</th>
+                        <th>Logging</th>
+                        <th>Tax ($)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Vehicles.Any())
+                    {
+                        <tr class="empty-row"><td colspan="6">No taxable vehicles added yet — use the form below to add one.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var v in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>@v.UnitNumber</td>
+                                <td>@v.Vin</td>
+                                <td>@v.WeightCategory</td>
+                                <td>@(v.IsLogging ? "Yes" : "No")</td>
+                                <td>@v.TaxAmount.ToString("N2")</td>
+                                <td>
+                                    <form asp-action="DeleteTaxableVehicle" asp-controller="Filing" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@v.Id" />
+                                        <input type="hidden" name="businessTaxPeriodId" value="@Model.BusinessTaxPeriodId" />
+                                        <button type="submit" class="icon-btn" title="Delete" onclick="return confirm('Remove this vehicle?');">&#10005;</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        <tr class="total-row">
+                            <td colspan="4">Total</td>
+                            <td colspan="2">@Model.Total.ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <form asp-action="AddTaxableVehicle" asp-controller="Filing" method="post" class="add-form" novalidate>
+                <input type="hidden" asp-for="NewVehicle.BusinessTaxPeriodId" value="@Model.BusinessTaxPeriodId" />
+                <div class="add-form-grid">
+                    <div>
+                        <label>VIN</label>
+                        <input asp-for="NewVehicle.Vin" type="text" maxlength="17" placeholder="17-character VIN" style="text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()" />
+                        <span asp-validation-for="NewVehicle.Vin" class="field-error"></span>
+                    </div>
+                    <div>
+                        <label>
+                            Gross Weight
+                            <span class="help-icon">?<span class="tip">Select the category matching your vehicle's taxable gross weight.</span></span>
+                        </label>
+                        <select asp-for="NewVehicle.WeightCategory">
+                            <option value="">Select category...</option>
+                            @foreach (var cat in categories)
+                            {
+                                <option value="@cat.Category">@cat.Category - @cat.WeightRangeLabel</option>
+                            }
+                        </select>
+                        <span asp-validation-for="NewVehicle.WeightCategory" class="field-error"></span>
+                    </div>
+                    <div class="logging-check">
+                        <input asp-for="NewVehicle.IsLogging" type="checkbox" id="isLogging" />
+                        <label for="isLogging" style="text-transform:none;font-weight:500;margin:0;">
+                            Logging
+                            <span class="help-icon">?<span class="tip">Vehicles used exclusively to transport harvested forest products are taxed at a reduced rate.</span></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="add-btn">Add Vehicle</button>
+                </div>
+            </form>
+
+            <form asp-action="NextFromTaxableVehicle" asp-controller="Filing" method="post">
+                <input type="hidden" name="businessTaxPeriodId" value="@Model.BusinessTaxPeriodId" />
+                <div class="submit-row">
+                    <a href="/Filing/FilingCategory?businessTaxPeriodId=@Model.BusinessTaxPeriodId" class="prev-link">&larr; Previous Step</a>
+                    <button type="submit" class="submit-btn">Next Step &rarr;</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+
